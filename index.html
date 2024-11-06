@@ -3,54 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تتبع المسلسلات والأفلام</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>حساباتي على وسائل التواصل الاجتماعي</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .profile-img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+
+    .social-links {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .social-links li {
+      margin: 15px 0;
+    }
+
+    .social-links a img {
+      width: 40px;
+      height: 40px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-links a img:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+
+    footer a {
+      color: #7f8c8d;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
+
   <div class="container">
-    <h2>تتبع المسلسلات والأفلام</h2>
+    <h1>حساباتي على وسائل التواصل الاجتماعي</h1>
+    <img class="profile-img" src="https://top4top.me/ar/otudWfBwu2rKtcX/preview" alt="صورة شخصية">
 
-    <!-- خيارات الرمز -->
-    <label>هل لديك رمز؟</label>
-    <button onclick="showCodeInput()">لدي رمز</button>
-    <button onclick="generateCode()">ليس لدي رمز</button>
+    <ul class="social-links">
+      <li><a href="https://t.me/OnlyAbuSattam" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png" alt="تيليجرام حساب شخصي"></a></li>
+      <li><a href="https://t.me/ioooj" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png" alt="تيليجرام قناه اجر"></a></li>
+      <li><a href="https://instagram.com/tw1a" target="_blank"><img src="https://img.freepik.com/free-psd/3d-circle-with-instagram-symbol-isolated-transparent-background_125540-3727.jpg" alt="انستقرام حساب شخصي"></a></li>
+      <li><a href="https://instagram.com/fj.z7" target="_blank"><img src="https://img.freepik.com/free-psd/3d-circle-with-instagram-symbol-isolated-transparent-background_125540-3727.jpg" alt="انستقرام قناه اجر"></a></li>
+    </ul>
 
-    <!-- إدخال الرمز -->
-    <div id="codeSection" style="display: none;">
-      <label for="code">أدخل الرمز:</label>
-      <input type="text" id="code" placeholder="أدخل الرمز">
-      <button onclick="checkCode()">تأكيد الرمز</button>
-    </div>
-
-    <!-- نموذج إضافة التفاصيل -->
-    <div id="trackingForm" style="display: none;">
-      <label for="type">اختر نوع العرض:</label>
-      <select id="type" onchange="toggleFields()">
-        <option value="series">مسلسل</option>
-        <option value="movie">فيلم</option>
-      </select>
-
-      <label for="title">اسم العرض:</label>
-      <input type="text" id="title" placeholder="اكتب اسم المسلسل أو الفيلم">
-
-      <div id="seriesFields" class="seriesFields">
-        <label for="season">الموسم:</label>
-        <input type="number" id="season" min="1" placeholder="رقم الموسم">
-        
-        <label for="episode">الحلقة:</label>
-        <input type="number" id="episode" min="1" placeholder="رقم الحلقة">
-      </div>
-
-      <label for="time">الوقت:</label>
-      <input type="text" id="time" placeholder="ساعات:دقائق:ثواني (مثال 0:12:12)">
-      
-      <button onclick="saveData()">حفظ البيانات</button>
-    </div>
-
-    <!-- عرض البيانات المخزنة -->
-    <div class="info" id="infoDisplay" style="display: none;"></div>
+    <footer>
+      <p>جميع الحقوق محفوظة.</p>
+    </footer>
   </div>
 
-  <script src="script.js"></script>
 </body>
 </html>
