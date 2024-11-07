@@ -39,6 +39,7 @@
         <th>التاريخ</th>
         <th>العد التنازلي</th>
     </tr>
+    <tr><td>بداية الاختبارات النهائية للفصل الدراسي الأول</td><td>الأحد 2024/12/22</td><td id="countdownFinalExam"></td></tr>
     <tr><td>نهاية الترم الأول</td><td>الخميس 2025/01/02</td><td id="countdownEndTerm1"></td></tr>
     <tr><td>بداية الترم الثاني</td><td>الأحد 2025/01/12</td><td id="countdownStartTerm2"></td></tr>
 </table>
@@ -78,6 +79,7 @@
 
     // تواريخ الأحداث الأكاديمية
     const academicEvents = [
+        { date: new Date("2024-12-22T00:00:00"), id: "countdownFinalExam" },
         { date: new Date("2025-01-02T00:00:00"), id: "countdownEndTerm1" },
         { date: new Date("2025-01-12T00:00:00"), id: "countdownStartTerm2" }
     ];
@@ -114,4 +116,13 @@
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             document.getElementById(event.id).innerHTML = 
-                (distance > 0) ? `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية` :
+                (distance > 0) ? `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية` : "اليوم";
+        });
+    }
+
+    // تحديث العد التنازلي كل ثانية
+    setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
