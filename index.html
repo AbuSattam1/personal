@@ -1,56 +1,117 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تتبع المسلسلات والأفلام</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقويم الأكاديمي وعد تنازلي للمكافأة</title>
+    <style>
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
+        h1 { color: #006400; margin-top: 20px; }
+        table { width: 70%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; }
+        th { background-color: #006400; color: white; }
+        .warning { color: red; font-size: 0.9em; margin-top: 10px; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>تتبع المسلسلات والأفلام</h2>
 
-    <!-- خيارات الرمز -->
-    <label>هل لديك رمز؟</label>
-    <button onclick="showCodeInput()">لدي رمز</button>
-    <button onclick="generateCode()">ليس لدي رمز</button>
+<h1>التقويم الأكاديمي والعد التنازلي</h1>
 
-    <!-- إدخال الرمز -->
-    <div id="codeSection" style="display: none;">
-      <label for="code">أدخل الرمز:</label>
-      <input type="text" id="code" placeholder="أدخل الرمز">
-      <button onclick="checkCode()">تأكيد الرمز</button>
-    </div>
+<!-- عد تنازلي للمكافأة -->
+<h2>العد التنازلي للمكافأة الشهرية</h2>
+<table>
+    <tr>
+        <th>اليوم</th>
+        <th>التاريخ</th>
+        <th>العد التنازلي</th>
+    </tr>
+    <tr><td>25 من كل شهر</td><td id="date25"></td><td id="countdown25"></td></tr>
+    <tr><td>24 من كل شهر</td><td id="date24"></td><td id="countdown24"></td></tr>
+    <tr><td>23 من كل شهر</td><td id="date23"></td><td id="countdown23"></td></tr>
+</table>
+<p class="warning">ملاحظة: المكافأة لا تُصرف في أيام عطلة نهاية الأسبوع.</p>
 
-    <!-- نموذج إضافة التفاصيل -->
-    <div id="trackingForm" style="display: none;">
-      <label for="type">اختر نوع العرض:</label>
-      <select id="type" onchange="toggleFields()">
-        <option value="series">مسلسل</option>
-        <option value="movie">فيلم</option>
-      </select>
+<!-- عد تنازلي لأحداث الأكاديمية -->
+<h2>العد التنازلي لأحداث الأكاديمية</h2>
+<table>
+    <tr>
+        <th>الحدث</th>
+        <th>التاريخ</th>
+        <th>العد التنازلي</th>
+    </tr>
+    <tr><td>نهاية الترم الأول</td><td>الخميس 2025/01/02</td><td id="countdownEndTerm1"></td></tr>
+    <tr><td>بداية الترم الثاني</td><td>الأحد 2025/01/12</td><td id="countdownStartTerm2"></td></tr>
+</table>
 
-      <label for="title">اسم العرض:</label>
-      <input type="text" id="title" placeholder="اكتب اسم المسلسل أو الفيلم">
+<script>
+    // دالة لتحويل رقم اليوم إلى اسمه باللغة العربية
+    function getDayName(date) {
+        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+        return days[date.getDay()];
+    }
 
-      <div id="seriesFields" class="seriesFields">
-        <label for="season">الموسم:</label>
-        <input type="number" id="season" min="1" placeholder="رقم الموسم">
-        
-        <label for="episode">الحلقة:</label>
-        <input type="number" id="episode" min="1" placeholder="رقم الحلقة">
-      </div>
+    // تواريخ المكافأة للشهر الحالي
+    function getNextDate(day) {
+        const today = new Date();
+        let date = new Date(today.getFullYear(), today.getMonth(), day);
 
-      <label for="time">الوقت:</label>
-      <input type="text" id="time" placeholder="ساعات:دقائق:ثواني (مثال 0:12:12)">
-      
-      <button onclick="saveData()">حفظ البيانات</button>
-    </div>
+        // إذا كان التاريخ قد مضى، ننتقل للشهر القادم
+        if (date < today) {
+            date.setMonth(today.getMonth() + 1);
+        }
 
-    <!-- عرض البيانات المخزنة -->
-    <div class="info" id="infoDisplay" style="display: none;"></div>
-  </div>
+        // التأكد من أن المكافأة لا تُصرف في عطلة نهاية الأسبوع
+        const dayOfWeek = date.getDay();
+        if (dayOfWeek === 5) { // الجمعة
+            date.setDate(date.getDate() + 2);
+        } else if (dayOfWeek === 6) { // السبت
+            date.setDate(date.getDate() + 1);
+        }
 
-  <script src="script.js"></script>
-</body>
-</html>
+        return date;
+    }
+
+    // إعداد تواريخ المكافآت
+    const rewardDates = [getNextDate(23), getNextDate(24), getNextDate(25)];
+    const rewardIds = ["countdown23", "countdown24", "countdown25"];
+    const dateIds = ["date23", "date24", "date25"];
+
+    // تواريخ الأحداث الأكاديمية
+    const academicEvents = [
+        { date: new Date("2025-01-02T00:00:00"), id: "countdownEndTerm1" },
+        { date: new Date("2025-01-12T00:00:00"), id: "countdownStartTerm2" }
+    ];
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+
+        // تحديث العد التنازلي للمكافآت
+        rewardDates.forEach((date, index) => {
+            const distance = date - now;
+
+            // حساب الأيام والساعات والدقائق والثواني
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // عرض اليوم والتاريخ في الجدول
+            document.getElementById(dateIds[index]).innerText = 
+                `${getDayName(date)} ${date.toLocaleDateString("ar-EG")}`;
+
+            // تحديث العد التنازلي
+            document.getElementById(rewardIds[index]).innerHTML = 
+                (distance > 0) ? `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية` : "اليوم";
+        });
+
+        // تحديث العد التنازلي للأحداث الأكاديمية
+        academicEvents.forEach(event => {
+            const distance = event.date - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById(event.id).innerHTML = 
+                (distance > 0) ? `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية` :
