@@ -34,6 +34,7 @@
     }
     button:hover { background-color: #45a049; }
     .hidden { display: none; }
+    footer { text-align: center; font-size: 12px; color: #666; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -43,10 +44,10 @@
     <input type="text" id="fullName" required>
     
     <label for="universityID">الرقم الجامعي:</label>
-    <input type="text" id="universityID" required>
-    
+    <input type="text" id="universityID" required pattern="\d*" maxlength="10">
+
     <label for="phoneNumber">رقم الجوال:</label>
-    <input type="tel" id="phoneNumber" required>
+    <input type="tel" id="phoneNumber" required pattern="\d*" maxlength="10">
     
     <label for="actionType">الاختيار:</label>
     <select id="actionType" onchange="toggleFields()" required>
@@ -88,6 +89,8 @@
 
     <button type="button" onclick="submitForm()">إرسال</button>
   </form>
+
+  <footer>عمل الطالبة ليلى</footer>
 
   <script>
     function toggleFields() {
@@ -131,8 +134,10 @@
         message += `اسم الكتاب البديل: ${data.replacementBookName}\n`;
       } else {
         message += `اسم الكتاب: ${data.donatedBookName}\n`;
-        if (data.bookCondition === "used") {
-          message += `حالة الكتاب: ${data.usedBookCondition}\n`;
+        if (data.bookCondition === "new") {
+          message += `حالة الكتاب: جديد\n`;
+        } else if (data.bookCondition === "used") {
+          message += `حالة الكتاب: ${data.usedBookCondition === "excellent" ? "الكتاب في حالة ممتازة" : data.usedBookCondition === "average" ? "الكتاب متوسط الحالة" : "الكتاب تالف"}\n`;
         }
       }
 
