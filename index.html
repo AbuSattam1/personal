@@ -5,66 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مكتبة صلة</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            direction: rtl;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            background-color: #2c3e50;
-            color: #fff;
-            padding: 20px;
-        }
-
-        form {
-            background-color: #fff;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #27ae60;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #2ecc71;
-        }
-
-        .message {
-            color: green;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-
-        .error {
-            color: red;
-            font-size: 16px;
-        }
-
-        .hidden {
-            display: none;
-        }
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
+        .hidden { display: none; }
+        form { margin: 20px auto; width: 300px; }
+        input, select { width: 100%; margin: 10px 0; padding: 8px; }
+        button { padding: 10px; background-color: #006400; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #004d00; }
+        .message { margin-top: 20px; color: green; }
+        .error { color: red; }
     </style>
 </head>
 <body>
@@ -104,21 +52,8 @@
         <label for="loanedBook">اسم الكتاب:</label>
         <input type="text" id="loanedBook" required>
 
-        <label for="bookCondition">اختيار حالة الكتاب:</label>
-        <select id="bookCondition" required>
-            <option value="">اختر حالة الكتاب</option>
-            <option value="جديد">الكتاب جديد</option>
-            <option value="مستخدم">الكتاب مستخدم</option>
-        </select>
-
-        <div id="usedBookCondition" class="hidden">
-            <label for="bookStatus">حالة الكتاب:</label>
-            <select id="bookStatus">
-                <option value="ممتاز">الكتاب في حالة ممتازة</option>
-                <option value="متوسط">الكتاب متوسط الحالة</option>
-                <option value="تالف">الكتاب تالف</option>
-            </select>
-        </div>
+        <label for="loanDuration">المدة:</label>
+        <input type="text" id="loanDuration" required>
     </div>
 
     <button type="submit">إرسال النموذج</button>
@@ -132,9 +67,6 @@
         const actionType = document.getElementById("actionType").value;
         document.getElementById("borrowFields").classList.toggle("hidden", actionType !== "استعارة");
         document.getElementById("loanFields").classList.toggle("hidden", actionType !== "إعارة");
-
-        const bookCondition = document.getElementById("bookCondition").value;
-        document.getElementById("usedBookCondition").classList.toggle("hidden", bookCondition !== "مستخدم");
     }
 
     document.getElementById("libraryForm").addEventListener("submit", function(event) {
@@ -152,32 +84,27 @@
         if (actionType === "استعارة") {
             const borrowedBook = document.getElementById("borrowedBook").value;
             const replacementBook = document.getElementById("replacementBook").value;
-            message += `اسم الكتاب المستعار: ${borrowedBook}\n`;
+            message += `اسم الكتاب: ${borrowedBook}\n`;
             message += `اسم الكتاب البديل: ${replacementBook}\n`;
         } else if (actionType === "إعارة") {
             const loanedBook = document.getElementById("loanedBook").value;
-            const bookCondition = document.getElementById("bookCondition").value;
-            const bookStatus = document.getElementById("bookStatus").value;
+            const loanDuration = document.getElementById("loanDuration").value;
             message += `اسم الكتاب: ${loanedBook}\n`;
-            message += `حالة الكتاب: ${bookCondition}\n`;
-
-            if (bookCondition === "مستخدم") {
-                message += `حالة الكتاب المحددة: ${bookStatus}\n`;
-            }
+            message += `المدة: ${loanDuration}\n`;
         }
 
         sendMessageToTelegram(message);
     });
 
     function sendMessageToTelegram(message) {
-        const chatId = "YOUR_CHAT_ID"; // ضع معرف الدردشة الخاص بك
-        const token = "5061281257:AAHy082mvKaOSvnlPfV48kCpF6oo1ZUA7Js"; // التوكن الجديد للبوت
+        const chatId = "201453"; // ID الخاص بالدردشة
+        const token = "5061281257:AAHQa1SlXOTXMb3qeacU00Ac6paaiQndryQ"; // توكن البوت
         const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
         const data = {
             chat_id: chatId,
             text: message,
-            parse_mode: "HTML"
+            parse_mode: "HTML" // يمكنك استخدام HTML لتنسيق الرسالة
         };
 
         fetch(url, {
