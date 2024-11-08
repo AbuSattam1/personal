@@ -5,13 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مكتبة صلة</title>
     <style>
-        body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
-        .hidden { display: none; }
-        form { margin: 20px auto; width: 300px; }
-        input, select { width: 100%; margin: 10px 0; }
-        button { padding: 10px; background-color: #006400; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #004d00; }
-        .message { margin-top: 20px; color: green; }
+        body { 
+            font-family: Arial, sans-serif; 
+            direction: rtl; 
+            text-align: center; 
+            background-color: #f7f7f7; 
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        form {
+            margin: 20px auto;
+            width: 300px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+        .message {
+            margin-top: 20px;
+            color: green;
+            font-size: 16px;
+        }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -59,10 +99,11 @@
 </form>
 
 <div id="confirmationMessage" class="message hidden"></div>
+<div id="errorMessage" class="error hidden"></div>
 
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.1.0/dist/email.min.js"></script>
 <script>
-    emailjs.init("i2M-FfL2ynXV2nDbWUKfB");  // استخدام الـ User ID الخاص بك
+    emailjs.init('i2M-FfL2ynXV2nDbWUKfB'); // Replace with your EmailJS user ID
 
     function toggleFields() {
         const actionType = document.getElementById("actionType").value;
@@ -73,26 +114,22 @@
     document.getElementById("libraryForm").addEventListener("submit", function(event) {
         event.preventDefault();
         
-        const actionType = document.getElementById("actionType").value;
         const fullName = document.getElementById("fullName").value;
         const studentId = document.getElementById("studentId").value;
         const phoneNumber = document.getElementById("phoneNumber").value;
-
-        let message = `النوع: ${actionType}\n`;
-        message += `الاسم: ${fullName}\n`;
-        message += `الرقم الجامعي: ${studentId}\n`;
-        message += `رقم الجوال: ${phoneNumber}\n`;
+        const actionType = document.getElementById("actionType").value;
+        
+        let borrowedBook = "";
+        let replacementBook = "";
+        let loanedBook = "";
+        let loanDuration = "";
 
         if (actionType === "استعارة") {
-            const borrowedBook = document.getElementById("borrowedBook").value;
-            const replacementBook = document.getElementById("replacementBook").value;
-            message += `اسم الكتاب: ${borrowedBook}\n`;
-            message += `اسم الكتاب البديل: ${replacementBook}\n`;
+            borrowedBook = document.getElementById("borrowedBook").value;
+            replacementBook = document.getElementById("replacementBook").value;
         } else if (actionType === "إعارة") {
-            const loanedBook = document.getElementById("loanedBook").value;
-            const loanDuration = document.getElementById("loanDuration").value;
-            message += `اسم الكتاب: ${loanedBook}\n`;
-            message += `المدة: ${loanDuration}\n`;
+            loanedBook = document.getElementById("loanedBook").value;
+            loanDuration = document.getElementById("loanDuration").value;
         }
 
         const templateParams = {
@@ -100,20 +137,23 @@
             studentId: studentId,
             phoneNumber: phoneNumber,
             actionType: actionType,
-            borrowedBook: document.getElementById("borrowedBook").value,
-            replacementBook: document.getElementById("replacementBook").value,
-            loanedBook: document.getElementById("loanedBook").value,
-            loanDuration: document.getElementById("loanDuration").value,
+            borrowedBook: borrowedBook,
+            replacementBook: replacementBook,
+            loanedBook: loanedBook,
+            loanDuration: loanDuration
         };
 
-        emailjs.send("service_6unpt1i", "template_ih9e0ws", templateParams)
+        emailjs.send('service_6unpt1i', 'template_leyalad', templateParams)
             .then(function(response) {
                 document.getElementById("confirmationMessage").innerText = "تم إرسال النموذج بنجاح!";
                 document.getElementById("confirmationMessage").classList.remove("hidden");
+                document.getElementById("errorMessage").classList.add("hidden");
                 document.getElementById("libraryForm").reset();
-                toggleFields(); // إعادة تعيين الحقول
+                toggleFields();
             }, function(error) {
-                alert("حدث خطأ أثناء إرسال الطلب.");
+                document.getElementById("errorMessage").innerText = "حدث خطأ أثناء إرسال الطلب.";
+                document.getElementById("errorMessage").classList.remove("hidden");
+                document.getElementById("confirmationMessage").classList.add("hidden");
             });
     });
 </script>
