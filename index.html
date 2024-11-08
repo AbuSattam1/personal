@@ -3,152 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>التقويم الأكاديمي وعد تنازلي للمكافأة</title>
+    <title>مكتبة صلة</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        h1 {
-            color: #006400;
-            margin-top: 20px;
-            font-size: 1.5em;
-        }
-        table {
-            width: 95%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 15px;
-            font-size: 1.1em;
-        }
-        th {
-            background-color: #006400;
-            color: white;
-            font-size: 1.2em;
-        }
-        .warning {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
+        .hidden { display: none; }
+        form { margin: 20px auto; width: 300px; }
+        input, select { width: 100%; margin: 10px 0; }
+        button { padding: 10px; background-color: #006400; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #004d00; }
     </style>
 </head>
 <body>
 
-<h1>التقويم الأكاديمي والعد التنازلي</h1>
+<h1>نموذج مكتبة صلة</h1>
 
-<!-- عد تنازلي للمكافأة -->
-<h2>العد التنازلي للمكافأة الشهرية</h2>
-<table>
-    <tr>
-        <th>اليوم</th>
-        <th>التاريخ</th>
-        <th>العد التنازلي</th>
-    </tr>
-    <tr><td>25 من كل شهر</td><td id="date25"></td><td id="countdown25"></td></tr>
-    <tr><td>24 من كل شهر</td><td id="date24"></td><td id="countdown24"></td></tr>
-    <tr><td>23 من كل شهر</td><td id="date23"></td><td id="countdown23"></td></tr>
-</table>
-<p class="warning">ملاحظة: المكافأة لا تُصرف في أيام عطلة نهاية الأسبوع.</p>
+<form id="libraryForm">
+    <label for="fullName">الأسم الثلاثي:</label>
+    <input type="text" id="fullName" required>
 
-<!-- عد تنازلي لأحداث الأكاديمية -->
-<h2>العد التنازلي لأحداث الأكاديمية</h2>
-<table>
-    <tr>
-        <th>الحدث</th>
-        <th>التاريخ</th>
-        <th>العد التنازلي</th>
-    </tr>
-    <tr><td>بداية الاختبارات النهائية للفصل الدراسي الأول</td><td>الأحد 2024/12/22</td><td id="countdownFinalExam"></td></tr>
-    <tr><td>نهاية الترم الأول</td><td>الخميس 2025/01/02</td><td id="countdownEndTerm1"></td></tr>
-    <tr><td>بداية الترم الثاني</td><td>الأحد 2025/01/12</td><td id="countdownStartTerm2"></td></tr>
-</table>
+    <label for="studentId">الرقم الجامعي:</label>
+    <input type="text" id="studentId" required>
+
+    <label for="phoneNumber">رقم الجوال:</label>
+    <input type="tel" id="phoneNumber" required>
+
+    <label for="actionType">اختيار نوع الطلب:</label>
+    <select id="actionType" onchange="toggleFields()" required>
+        <option value="">اختر...</option>
+        <option value="استعارة">استعارة كتاب</option>
+        <option value="إعارة">إعارة كتاب</option>
+    </select>
+
+    <div id="borrowFields" class="hidden">
+        <h3>خيارات الاستعارة</h3>
+        <p>تعريف الاستعارة: الكتاب لا يسترجع ويوضع بداله كتاب بديل</p>
+        <label for="borrowedBook">اسم الكتاب المستعار:</label>
+        <input type="text" id="borrowedBook" required>
+
+        <label for="replacementBook">اسم الكتاب البديل:</label>
+        <input type="text" id="replacementBook" required>
+    </div>
+
+    <div id="loanFields" class="hidden">
+        <h3>خيارات الإعارة</h3>
+        <p>تعريف الإعارة: الكتاب يسترجع</p>
+        <label for="loanedBook">اسم الكتاب:</label>
+        <input type="text" id="loanedBook" required>
+
+        <label for="loanDuration">المدة:</label>
+        <input type="text" id="loanDuration" required>
+    </div>
+
+    <button type="submit">إرسال النموذج</button>
+</form>
 
 <script>
-    // دالة لتحويل رقم اليوم إلى اسمه باللغة العربية
-    function getDayName(date) {
-        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-        return days[date.getDay()];
+    function toggleFields() {
+        const actionType = document.getElementById("actionType").value;
+        document.getElementById("borrowFields").classList.toggle("hidden", actionType !== "استعارة");
+        document.getElementById("loanFields").classList.toggle("hidden", actionType !== "إعارة");
     }
 
-    // تواريخ المكافأة للشهر الحالي
-    function getNextDate(day) {
-        const today = new Date();
-        let date = new Date(today.getFullYear(), today.getMonth(), day);
+    document.getElementById("libraryForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const actionType = document.getElementById("actionType").value;
+        const fullName = document.getElementById("fullName").value;
+        const studentId = document.getElementById("studentId").value;
+        const phoneNumber = document.getElementById("phoneNumber").value;
 
-        // إذا كان التاريخ قد مضى، ننتقل للشهر القادم
-        if (date < today) {
-            date.setMonth(today.getMonth() + 1);
+        let message = `النوع: ${actionType}\n`;
+        message += `الاسم: ${fullName}\n`;
+        message += `الرقم الجامعي: ${studentId}\n`;
+        message += `رقم الجوال: ${phoneNumber}\n`;
+
+        if (actionType === "استعارة") {
+            const borrowedBook = document.getElementById("borrowedBook").value;
+            const replacementBook = document.getElementById("replacementBook").value;
+            message += `اسم الكتاب: ${borrowedBook}\n`;
+            message += `اسم الكتاب البديل: ${replacementBook}\n`;
+        } else if (actionType === "إعارة") {
+            const loanedBook = document.getElementById("loanedBook").value;
+            const loanDuration = document.getElementById("loanDuration").value;
+            message += `اسم الكتاب: ${loanedBook}\n`;
+            message += `المدة: ${loanDuration}\n`;
         }
 
-        // التأكد من أن المكافأة لا تُصرف في عطلة نهاية الأسبوع
-        const dayOfWeek = date.getDay();
-        if (dayOfWeek === 5) { // الجمعة
-            date.setDate(date.getDate() + 2);
-        } else if (dayOfWeek === 6) { // السبت
-            date.setDate(date.getDate() + 1);
-        }
+        sendMessageToTelegram(message);
+    });
 
-        return date;
+    function sendMessageToTelegram(message) {
+        const chatId = "201453"; // ID الخاص بالدردشة
+        const token = "5061281257:AAHQa1SlXOTXMb3qeacU00Ac6paaiQndryQ"; // توكن البوت
+        const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    alert("تم إرسال الطلب بنجاح!");
+                    document.getElementById("libraryForm").reset();
+                    toggleFields(); // إعادة تعيين الحقول
+                } else {
+                    alert("فشل في إرسال الطلب.");
+                }
+            })
+            .catch(error => {
+                console.error("حدث خطأ:", error);
+                alert("حدث خطأ أثناء إرسال الطلب.");
+            });
     }
-
-    // إعداد تواريخ المكافآت
-    const rewardDates = [getNextDate(23), getNextDate(24), getNextDate(25)];
-    const rewardIds = ["countdown23", "countdown24", "countdown25"];
-    const dateIds = ["date23", "date24", "date25"];
-
-    // تواريخ الأحداث الأكاديمية
-    const academicEvents = [
-        { date: new Date("2024-12-22T00:00:00"), id: "countdownFinalExam" },
-        { date: new Date("2025-01-02T00:00:00"), id: "countdownEndTerm1" },
-        { date: new Date("2025-01-12T00:00:00"), id: "countdownStartTerm2" }
-    ];
-
-    function updateCountdown() {
-        const now = new Date().getTime();
-
-        // تحديث العد التنازلي للمكافآت
-        rewardDates.forEach((date, index) => {
-            const distance = date - now;
-
-            // حساب الأيام والساعات والدقائق والثواني
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // عرض اليوم والتاريخ في الجدول
-            document.getElementById(dateIds[index]).innerText = 
-                `${getDayName(date)} ${date.toLocaleDateString("ar-EG")}`;
-
-            // تحديث العد التنازلي
-            document.getElementById(rewardIds[index]).innerHTML = 
-                (distance > 0) ? `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية` : "اليوم";
-        });
-
-        // تحديث العد التنازلي للأحداث الأكاديمية
-        academicEvents.forEach(event => {
-            const distance = event.date - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById(event.id).innerHTML = 
-                (distance > 0) ? `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية` : "اليوم";
-        });
-    }
-
-    // تحديث العد التنازلي كل ثانية
-    setInterval(updateCountdown, 1000);
 </script>
 
 </body>
