@@ -87,9 +87,26 @@
 
     <div id="loanFields" class="hidden">
         <h3>خيارات الإعارة</h3>
-        <p>تعريف الإعارة: الكتاب يسترجع</p>
+        <p>تعريف الإعارة: إعطاء الكتاب للمكتبة</p>
         <label for="loanedBook">اسم الكتاب:</label>
         <input type="text" id="loanedBook" required>
+
+        <label for="bookCondition">اختيار حالة الكتاب:</label>
+        <select id="bookCondition" onchange="toggleBookConditionFields()" required>
+            <option value="">اختر حالة الكتاب</option>
+            <option value="جديد">الكتاب جديد</option>
+            <option value="مستخدم">الكتاب مستخدم</option>
+        </select>
+
+        <div id="usedBookCondition" class="hidden">
+            <label for="bookState">حالة الكتاب:</label>
+            <select id="bookState" required>
+                <option value="">اختر الحالة</option>
+                <option value="ممتاز">الكتاب في حالة ممتازة</option>
+                <option value="متوسط">الكتاب متوسط الحالة</option>
+                <option value="تالف">الكتاب تالف</option>
+            </select>
+        </div>
 
         <label for="loanDuration">المدة:</label>
         <input type="text" id="loanDuration" required>
@@ -101,14 +118,16 @@
 <div id="confirmationMessage" class="message hidden"></div>
 <div id="errorMessage" class="error hidden"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.1.0/dist/email.min.js"></script>
 <script>
-    emailjs.init('i2M-FfL2ynXV2nDbWUKfB'); // Replace with your EmailJS user ID
-
     function toggleFields() {
         const actionType = document.getElementById("actionType").value;
         document.getElementById("borrowFields").classList.toggle("hidden", actionType !== "استعارة");
         document.getElementById("loanFields").classList.toggle("hidden", actionType !== "إعارة");
+    }
+
+    function toggleBookConditionFields() {
+        const bookCondition = document.getElementById("bookCondition").value;
+        document.getElementById("usedBookCondition").classList.toggle("hidden", bookCondition !== "مستخدم");
     }
 
     document.getElementById("libraryForm").addEventListener("submit", function(event) {
@@ -122,6 +141,7 @@
         let borrowedBook = "";
         let replacementBook = "";
         let loanedBook = "";
+        let bookState = "";
         let loanDuration = "";
 
         if (actionType === "استعارة") {
@@ -129,33 +149,62 @@
             replacementBook = document.getElementById("replacementBook").value;
         } else if (actionType === "إعارة") {
             loanedBook = document.getElementById("loanedBook").value;
+            const bookCondition = document.getElementById("bookCondition").value;
+            if (bookCondition === "مستخدم") {
+                bookState = document.getElementById("bookState").value;
+            }
             loanDuration = document.getElementById("loanDuration").value;
         }
 
-        const templateParams = {
-            fullName: fullName,
-            studentId: studentId,
-            phoneNumber: phoneNumber,
-            actionType: actionType,
-            borrowedBook: borrowedBook,
-            replacementBook: replacementBook,
-            loanedBook: loanedBook,
-            loanDuration: loanDuration
+        const message = `
+            النوع: ${actionType}\n
+            الاسم: ${fullName}\n
+            الرقم الجامعي: ${studentId}\n
+            رقم الجوال: ${phoneNumber}\n
+            ${actionType === "استعارة" ? `اسم الكتاب المستعار: ${borrowedBook}\nاسم الكتاب البديل: ${replacementBook}\n` : `اسم الكتاب: ${loanedBook}\nحالة الكتاب: ${bookState}\nالمدة: ${loanDuration}\n`}
+        `;
+
+        sendMessageToTelegram(message);
+    });
+
+    function sendMessageToTelegram(message) {
+        const chatId = "201453"; // ID الخاص بالدردشة
+        const token = "5061281257:AAHQa1SlXOTXMb3qeacU00Ac6paaiQndryQ"; // توكن البوت
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+        const data = {
+            chat_id: chatId,
+            text: message,
+            parse_mode: "HTML"
         };
 
-        emailjs.send('service_6unpt1i', 'template_leyalad', templateParams)
-            .then(function(response) {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
                 document.getElementById("confirmationMessage").innerText = "تم إرسال النموذج بنجاح!";
                 document.getElementById("confirmationMessage").classList.remove("hidden");
                 document.getElementById("errorMessage").classList.add("hidden");
                 document.getElementById("libraryForm").reset();
                 toggleFields();
-            }, function(error) {
+            } else {
                 document.getElementById("errorMessage").innerText = "حدث خطأ أثناء إرسال الطلب.";
                 document.getElementById("errorMessage").classList.remove("hidden");
                 document.getElementById("confirmationMessage").classList.add("hidden");
-            });
-    });
+            }
+        })
+        .catch(error => {
+            console.error("حدث خطأ:", error);
+            document.getElementById("errorMessage").innerText = "حدث خطأ أثناء إرسال الطلب.";
+            document.getElementById("errorMessage").classList.remove("hidden");
+            document.getElementById("confirmationMessage").classList.add("hidden");
+        });
+    }
 </script>
 
 </body>
