@@ -74,17 +74,10 @@
       <select id="bookCondition" onchange="toggleConditionOptions()">
         <option value="">اختر حالة الكتاب</option>
         <option value="new">جديد</option>
-        <option value="used">مستخدم</option>
+        <option value="excellent">الكتاب في حالة ممتازة</option>
+        <option value="average">الكتاب متوسط الحالة</option>
+        <option value="damaged">الكتاب تالف</option>
       </select>
-
-      <div id="usedOptions" class="hidden">
-        <label for="usedBookCondition">حالة الكتاب المستخدم:</label>
-        <select id="usedBookCondition">
-          <option value="excellent">الكتاب في حالة ممتازة</option>
-          <option value="average">الكتاب متوسط الحالة</option>
-          <option value="damaged">الكتاب تالف</option>
-        </select>
-      </div>
     </div>
 
     <button type="button" onclick="submitForm()">إرسال</button>
@@ -114,7 +107,6 @@
         replacementBookName: document.getElementById("replacementBookName").value,
         donatedBookName: document.getElementById("donatedBookName").value,
         bookCondition: document.getElementById("bookCondition").value,
-        usedBookCondition: document.getElementById("usedBookCondition").value,
         duration: "غير محددة"
       };
 
@@ -134,10 +126,15 @@
         message += `اسم الكتاب البديل: ${data.replacementBookName}\n`;
       } else {
         message += `اسم الكتاب: ${data.donatedBookName}\n`;
+        message += `حالة الكتاب: `;
         if (data.bookCondition === "new") {
-          message += `حالة الكتاب: جديد\n`;
-        } else if (data.bookCondition === "used") {
-          message += `حالة الكتاب: ${data.usedBookCondition === "excellent" ? "الكتاب في حالة ممتازة" : data.usedBookCondition === "average" ? "الكتاب متوسط الحالة" : "الكتاب تالف"}\n`;
+          message += `جديد\n`;
+        } else if (data.bookCondition === "excellent") {
+          message += `الكتاب في حالة ممتازة\n`;
+        } else if (data.bookCondition === "average") {
+          message += `الكتاب متوسط الحالة\n`;
+        } else if (data.bookCondition === "damaged") {
+          message += `الكتاب تالف\n`;
         }
       }
 
