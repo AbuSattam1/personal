@@ -5,53 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مكتبة صلة</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            direction: rtl; 
-            text-align: center; 
-            background-color: #f7f7f7; 
-            padding: 20px;
-        }
-        h1 {
-            color: #4CAF50;
-        }
-        form {
-            margin: 20px auto;
-            width: 300px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .hidden {
-            display: none;
-        }
-        .message {
-            margin-top: 20px;
-            color: green;
-            font-size: 16px;
-        }
-        .error {
-            color: red;
-        }
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
+        .hidden { display: none; }
+        form { margin: 20px auto; width: 300px; }
+        input, select { width: 100%; margin: 10px 0; padding: 8px; }
+        button { padding: 10px; background-color: #006400; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #004d00; }
+        .message { margin-top: 20px; color: green; }
+        .error { color: red; }
     </style>
 </head>
 <body>
@@ -87,29 +48,25 @@
 
     <div id="loanFields" class="hidden">
         <h3>خيارات الإعارة</h3>
-        <p>تعريف الإعارة: إعطاء الكتاب للمكتبة</p>
+        <p>تعريف الإعارة: الكتاب يسترجع</p>
         <label for="loanedBook">اسم الكتاب:</label>
         <input type="text" id="loanedBook" required>
 
         <label for="bookCondition">اختيار حالة الكتاب:</label>
-        <select id="bookCondition" onchange="toggleBookConditionFields()" required>
+        <select id="bookCondition" required>
             <option value="">اختر حالة الكتاب</option>
             <option value="جديد">الكتاب جديد</option>
             <option value="مستخدم">الكتاب مستخدم</option>
         </select>
 
         <div id="usedBookCondition" class="hidden">
-            <label for="bookState">حالة الكتاب:</label>
-            <select id="bookState" required>
-                <option value="">اختر الحالة</option>
+            <label for="bookStatus">حالة الكتاب:</label>
+            <select id="bookStatus">
                 <option value="ممتاز">الكتاب في حالة ممتازة</option>
                 <option value="متوسط">الكتاب متوسط الحالة</option>
                 <option value="تالف">الكتاب تالف</option>
             </select>
         </div>
-
-        <label for="loanDuration">المدة:</label>
-        <input type="text" id="loanDuration" required>
     </div>
 
     <button type="submit">إرسال النموذج</button>
@@ -123,46 +80,40 @@
         const actionType = document.getElementById("actionType").value;
         document.getElementById("borrowFields").classList.toggle("hidden", actionType !== "استعارة");
         document.getElementById("loanFields").classList.toggle("hidden", actionType !== "إعارة");
-    }
 
-    function toggleBookConditionFields() {
+        // التبديل بين حالة الكتاب (جديد / مستخدم)
         const bookCondition = document.getElementById("bookCondition").value;
         document.getElementById("usedBookCondition").classList.toggle("hidden", bookCondition !== "مستخدم");
     }
 
     document.getElementById("libraryForm").addEventListener("submit", function(event) {
         event.preventDefault();
-        
+        const actionType = document.getElementById("actionType").value;
         const fullName = document.getElementById("fullName").value;
         const studentId = document.getElementById("studentId").value;
         const phoneNumber = document.getElementById("phoneNumber").value;
-        const actionType = document.getElementById("actionType").value;
-        
-        let borrowedBook = "";
-        let replacementBook = "";
-        let loanedBook = "";
-        let bookState = "";
-        let loanDuration = "";
+
+        let message = `النوع: ${actionType}\n`;
+        message += `الاسم: ${fullName}\n`;
+        message += `الرقم الجامعي: ${studentId}\n`;
+        message += `رقم الجوال: ${phoneNumber}\n`;
 
         if (actionType === "استعارة") {
-            borrowedBook = document.getElementById("borrowedBook").value;
-            replacementBook = document.getElementById("replacementBook").value;
+            const borrowedBook = document.getElementById("borrowedBook").value;
+            const replacementBook = document.getElementById("replacementBook").value;
+            message += `اسم الكتاب: ${borrowedBook}\n`;
+            message += `اسم الكتاب البديل: ${replacementBook}\n`;
         } else if (actionType === "إعارة") {
-            loanedBook = document.getElementById("loanedBook").value;
+            const loanedBook = document.getElementById("loanedBook").value;
             const bookCondition = document.getElementById("bookCondition").value;
-            if (bookCondition === "مستخدم") {
-                bookState = document.getElementById("bookState").value;
-            }
-            loanDuration = document.getElementById("loanDuration").value;
-        }
+            const bookStatus = document.getElementById("bookStatus").value;
+            message += `اسم الكتاب: ${loanedBook}\n`;
+            message += `حالة الكتاب: ${bookCondition}\n`;
 
-        const message = `
-            النوع: ${actionType}\n
-            الاسم: ${fullName}\n
-            الرقم الجامعي: ${studentId}\n
-            رقم الجوال: ${phoneNumber}\n
-            ${actionType === "استعارة" ? `اسم الكتاب المستعار: ${borrowedBook}\nاسم الكتاب البديل: ${replacementBook}\n` : `اسم الكتاب: ${loanedBook}\nحالة الكتاب: ${bookState}\nالمدة: ${loanDuration}\n`}
-        `;
+            if (bookCondition === "مستخدم") {
+                message += `حالة الكتاب المحددة: ${bookStatus}\n`;
+            }
+        }
 
         sendMessageToTelegram(message);
     });
@@ -175,7 +126,7 @@
         const data = {
             chat_id: chatId,
             text: message,
-            parse_mode: "HTML"
+            parse_mode: "HTML" // يمكنك استخدام HTML لتنسيق الرسالة
         };
 
         fetch(url, {
@@ -187,23 +138,25 @@
         })
         .then(response => {
             if (response.ok) {
-                document.getElementById("confirmationMessage").innerText = "تم إرسال النموذج إلى إدارة مكتبة صلة بنجاح!";
+                document.getElementById("confirmationMessage").innerText = "تم إرسال النموذج بنجاح!";
                 document.getElementById("confirmationMessage").classList.remove("hidden");
                 document.getElementById("errorMessage").classList.add("hidden");
                 document.getElementById("libraryForm").reset();
-                toggleFields();
+                toggleFields(); // إعادة تعيين الحقول
             } else {
-                document.getElementById("errorMessage").innerText = "حدث خطأ أثناء إرسال الطلب.";
-                document.getElementById("errorMessage").classList.remove("hidden");
-                document.getElementById("confirmationMessage").classList.add("hidden");
+                showError("فشل في إرسال الطلب.");
             }
         })
         .catch(error => {
             console.error("حدث خطأ:", error);
-            document.getElementById("errorMessage").innerText = "حدث خطأ أثناء إرسال الطلب.";
-            document.getElementById("errorMessage").classList.remove("hidden");
-            document.getElementById("confirmationMessage").classList.add("hidden");
+            showError("حدث خطأ أثناء إرسال الطلب.");
         });
+    }
+
+    function showError(message) {
+        document.getElementById("errorMessage").innerText = message;
+        document.getElementById("errorMessage").classList.remove("hidden");
+        document.getElementById("confirmationMessage").classList.add("hidden");
     }
 </script>
 
