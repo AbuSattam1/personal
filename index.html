@@ -5,14 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نموذج مكتبة صلة</title>
   <style>
-    body { font-family: Arial, sans-serif; direction: rtl; }
-    label, select, input { display: block; margin-bottom: 8px; }
+    body { font-family: Arial, sans-serif; direction: rtl; background-color: #f4f4f9; }
+    h1 { text-align: center; color: #333; }
+    form {
+      width: 60%;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    label { font-weight: bold; color: #555; margin-top: 10px; }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background-color: #45a049; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
   <h1>نموذج مكتبة صلة</h1>
   <form id="libraryForm">
-    <!-- معلومات أساسية -->
     <label for="fullName">الاسم الثلاثي:</label>
     <input type="text" id="fullName" required>
     
@@ -22,7 +48,6 @@
     <label for="phoneNumber">رقم الجوال:</label>
     <input type="tel" id="phoneNumber" required>
     
-    <!-- نوع المعاملة -->
     <label for="actionType">الاختيار:</label>
     <select id="actionType" onchange="toggleFields()" required>
       <option value="">اختر نوع المعاملة</option>
@@ -30,8 +55,7 @@
       <option value="donate">إعارة كتاب</option>
     </select>
 
-    <!-- خيارات الاستعارة -->
-    <div id="borrowOptions" style="display: none;">
+    <div id="borrowOptions" class="hidden">
       <p><strong>الاستعارة:</strong> الكتاب لا يسترجع ويوضع بداله كتاب بديل.</p>
       <label for="borrowedBookName">اسم الكتاب المستعار:</label>
       <input type="text" id="borrowedBookName">
@@ -40,8 +64,7 @@
       <input type="text" id="replacementBookName">
     </div>
 
-    <!-- خيارات الإعارة -->
-    <div id="donateOptions" style="display: none;">
+    <div id="donateOptions" class="hidden">
       <p><strong>الإعارة:</strong> إعطاء الكتاب للمكتبة.</p>
       <label for="donatedBookName">اسم الكتاب:</label>
       <input type="text" id="donatedBookName">
@@ -53,8 +76,7 @@
         <option value="used">مستخدم</option>
       </select>
 
-      <!-- خيارات حالة الكتاب المستخدم -->
-      <div id="usedOptions" style="display: none;">
+      <div id="usedOptions" class="hidden">
         <label for="usedBookCondition">حالة الكتاب المستخدم:</label>
         <select id="usedBookCondition">
           <option value="excellent">الكتاب في حالة ممتازة</option>
@@ -70,17 +92,66 @@
   <script>
     function toggleFields() {
       const actionType = document.getElementById("actionType").value;
-      document.getElementById("borrowOptions").style.display = actionType === "borrow" ? "block" : "none";
-      document.getElementById("donateOptions").style.display = actionType === "donate" ? "block" : "none";
+      document.getElementById("borrowOptions").classList.toggle("hidden", actionType !== "borrow");
+      document.getElementById("donateOptions").classList.toggle("hidden", actionType !== "donate");
     }
 
     function toggleConditionOptions() {
       const bookCondition = document.getElementById("bookCondition").value;
-      document.getElementById("usedOptions").style.display = bookCondition === "used" ? "block" : "none";
+      document.getElementById("usedOptions").classList.toggle("hidden", bookCondition !== "used");
     }
 
-    function submitForm() {
-      alert("تم إرسال النموذج بنجاح!");
+    async function submitForm() {
+      const data = {
+        actionType: document.getElementById("actionType").value,
+        fullName: document.getElementById("fullName").value,
+        universityID: document.getElementById("universityID").value,
+        phoneNumber: document.getElementById("phoneNumber").value,
+        borrowedBookName: document.getElementById("borrowedBookName").value,
+        replacementBookName: document.getElementById("replacementBookName").value,
+        donatedBookName: document.getElementById("donatedBookName").value,
+        bookCondition: document.getElementById("bookCondition").value,
+        usedBookCondition: document.getElementById("usedBookCondition").value,
+        duration: "غير محددة"
+      };
+
+      // بيانات البوت للتليجرام
+      const TELEGRAM_CHAT_ID = '7947403575';
+      const TELEGRAM_TOKEN = '5061281257:AAHy082mvKaOSvnlPfV48kCpF6oo1ZUA7Js';
+      const TELEGRAM_URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+
+      // تنسيق الرسالة بناءً على نوع المعاملة
+      let message = `النوع: ${data.actionType === "borrow" ? "استعارة" : "إعارة"}\n`;
+      message += `الاسم: ${data.fullName}\n`;
+      message += `الرقم الجامعي: ${data.universityID}\n`;
+      message += `رقم الجوال: ${data.phoneNumber}\n`;
+
+      if (data.actionType === "borrow") {
+        message += `اسم الكتاب: ${data.borrowedBookName}\n`;
+        message += `اسم الكتاب البديل: ${data.replacementBookName}\n`;
+      } else {
+        message += `اسم الكتاب: ${data.donatedBookName}\n`;
+        if (data.bookCondition === "used") {
+          message += `حالة الكتاب: ${data.usedBookCondition}\n`;
+        }
+      }
+
+      // إرسال البيانات إلى تليجرام
+      try {
+        const response = await fetch(TELEGRAM_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        });
+        
+        if (response.ok) {
+          alert("تم إرسال النموذج بنجاح إلى تليجرام!");
+        } else {
+          alert("فشل إرسال النموذج. الرجاء المحاولة مرة أخرى.");
+        }
+      } catch (error) {
+        alert("حدث خطأ أثناء إرسال النموذج إلى تليجرام.");
+      }
     }
   </script>
 </body>
