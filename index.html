@@ -1,160 +1,82 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نموذج مكتبة صلة</title>
-  <style>
-    body { font-family: Arial, sans-serif; direction: rtl; background-color: #f4f4f9; }
-    h1 { text-align: center; color: #333; }
-    form {
-      width: 60%;
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    label { font-weight: bold; color: #555; margin-top: 10px; }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:hover { background-color: #45a049; }
-    .hidden { display: none; }
-    footer { text-align: center; font-size: 12px; color: #666; margin-top: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة صلة للكتب الجديدة والمستخدمة</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>نموذج مكتبة صلة</h1>
-  <form id="libraryForm">
-    <label for="fullName">الاسم الثلاثي:</label>
-    <input type="text" id="fullName" required>
-    
-    <label for="universityID">الرقم الجامعي:</label>
-    <input type="text" id="universityID" required pattern="\d*" maxlength="10">
+    <h1>نموذج مكتبة صلة</h1>
+    <div class="container">
+        <form id="libraryForm">
+            <label for="fullName">الاسم الثلاثي:</label>
+            <input type="text" id="fullName" required>
+            
+            <label for="universityID">الرقم الجامعي:</label>
+            <input type="text" id="universityID" required pattern="\d*" maxlength="10">
 
-    <label for="phoneNumber">رقم الجوال:</label>
-    <input type="tel" id="phoneNumber" required pattern="\d*" maxlength="10">
-    
-    <label for="actionType">الاختيار:</label>
-    <select id="actionType" onchange="toggleFields()" required>
-      <option value="">اختر نوع المعاملة</option>
-      <option value="borrow">استعارة كتاب</option>
-      <option value="donate">إعارة كتاب</option>
-    </select>
+            <label for="phoneNumber">رقم الجوال:</label>
+            <input type="tel" id="phoneNumber" required pattern="\d*" maxlength="10">
+            
+            <label for="actionType">الاختيار:</label>
+            <select id="actionType" onchange="toggleFields()" required>
+                <option value="">اختر نوع المعاملة</option>
+                <option value="borrow">استعارة كتاب</option>
+                <option value="donate">إعارة كتاب</option>
+            </select>
 
-    <div id="borrowOptions" class="hidden">
-      <p><strong>الاستعارة:</strong> الكتاب لا يسترجع ويوضع بداله كتاب بديل.</p>
-      <label for="borrowedBookName">اسم الكتاب المستعار:</label>
-      <input type="text" id="borrowedBookName">
-      
-      <label for="replacementBookName">اسم الكتاب البديل:</label>
-      <input type="text" id="replacementBookName">
+            <div id="borrowOptions" class="hidden">
+                <div class="section-header">خيارات الاستعارة</div>
+                <label for="loanType">نوع الاستعارة:</label>
+                <select id="loanType" onchange="toggleLoanDetails()" required>
+                    <option value="">اختر نوع الاستعارة</option>
+                    <option value="permanent">دائم</option>
+                    <option value="temporary">مؤقت</option>
+                </select>
+
+                <div id="permanentOptions" class="hidden">
+                    <p><strong>تعريف الاستعارة:</strong> الكتاب دائم ولا يسترجع ويوضع بداله كتاب آخر منك.</p>
+                    <label for="permanentBookName">اسم الكتاب المراد استعارته:</label>
+                    <input type="text" id="permanentBookName" required>
+                    
+                    <label for="replacementBookName">اسم الكتاب البديل:</label>
+                    <input type="text" id="replacementBookName" required>
+                </div>
+
+                <div id="temporaryOptions" class="hidden">
+                    <p><strong>تعريف الاستعارة:</strong> الكتاب مؤقت ويسترجع حسب سياسة مكتبة صلة.</p>
+                    <label for="temporaryBookName">اسم الكتاب المراد استعارته مؤقتاً:</label>
+                    <input type="text" id="temporaryBookName" required>
+
+                    <label for="loanEndDate">تاريخ انتهاء الاستعارة:</label>
+                    <input type="date" id="loanEndDate" required>
+                </div>
+            </div>
+
+            <div id="donateOptions" class="hidden">
+                <div class="section-header">خيارات الإعارة</div>
+                <p>إعطاء الكتاب للمكتبة.</p>
+                <label for="donatedBookName">اسم الكتاب:</label>
+                <input type="text" id="donatedBookName" required>
+
+                <label for="bookCondition">حالة الكتاب:</label>
+                <select id="bookCondition" required>
+                    <option value="">اختر حالة الكتاب</option>
+                    <option value="new">جديد</option>
+                    <option value="excellent">الكتاب في حالة ممتازة</option>
+                    <option value="average">الكتاب متوسط الحالة</option>
+                    <option value="damaged">الكتاب تالف</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="submitForm()">إرسال</button>
+            <div id="responseMessage" class="message hidden"></div>
+            <div id="errorMessage" class="error hidden"></div>
+        </form>
     </div>
 
-    <div id="donateOptions" class="hidden">
-      <p><strong>الإعارة:</strong> إعطاء الكتاب للمكتبة.</p>
-      <label for="donatedBookName">اسم الكتاب:</label>
-      <input type="text" id="donatedBookName">
-
-      <label for="bookCondition">حالة الكتاب:</label>
-      <select id="bookCondition" onchange="toggleConditionOptions()">
-        <option value="">اختر حالة الكتاب</option>
-        <option value="new">جديد</option>
-        <option value="excellent">الكتاب في حالة ممتازة</option>
-        <option value="average">الكتاب متوسط الحالة</option>
-        <option value="damaged">الكتاب تالف</option>
-      </select>
-    </div>
-
-    <button type="button" onclick="submitForm()">إرسال</button>
-  </form>
-
-  <footer>عمل الطالبة ليلى</footer>
-
-  <script>
-    function toggleFields() {
-      const actionType = document.getElementById("actionType").value;
-      document.getElementById("borrowOptions").classList.toggle("hidden", actionType !== "borrow");
-      document.getElementById("donateOptions").classList.toggle("hidden", actionType !== "donate");
-    }
-
-    function toggleConditionOptions() {
-      const bookCondition = document.getElementById("bookCondition").value;
-      document.getElementById("usedOptions").classList.toggle("hidden", bookCondition !== "used");
-    }
-
-    async function submitForm() {
-      const data = {
-        actionType: document.getElementById("actionType").value,
-        fullName: document.getElementById("fullName").value,
-        universityID: document.getElementById("universityID").value,
-        phoneNumber: document.getElementById("phoneNumber").value,
-        borrowedBookName: document.getElementById("borrowedBookName").value,
-        replacementBookName: document.getElementById("replacementBookName").value,
-        donatedBookName: document.getElementById("donatedBookName").value,
-        bookCondition: document.getElementById("bookCondition").value,
-        duration: "غير محددة"
-      };
-
-      // بيانات البوت للتليجرام
-      const TELEGRAM_CHAT_ID = '7947403575';
-      const TELEGRAM_TOKEN = '5061281257:AAHy082mvKaOSvnlPfV48kCpF6oo1ZUA7Js';
-      const TELEGRAM_URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-
-      // تنسيق الرسالة بناءً على نوع المعاملة
-      let message = `النوع: ${data.actionType === "borrow" ? "استعارة" : "إعارة"}\n`;
-      message += `الاسم: ${data.fullName}\n`;
-      message += `الرقم الجامعي: ${data.universityID}\n`;
-      message += `رقم الجوال: ${data.phoneNumber}\n`;
-
-      if (data.actionType === "borrow") {
-        message += `اسم الكتاب: ${data.borrowedBookName}\n`;
-        message += `اسم الكتاب البديل: ${data.replacementBookName}\n`;
-      } else {
-        message += `اسم الكتاب: ${data.donatedBookName}\n`;
-        message += `حالة الكتاب: `;
-        if (data.bookCondition === "new") {
-          message += `جديد\n`;
-        } else if (data.bookCondition === "excellent") {
-          message += `الكتاب في حالة ممتازة\n`;
-        } else if (data.bookCondition === "average") {
-          message += `الكتاب متوسط الحالة\n`;
-        } else if (data.bookCondition === "damaged") {
-          message += `الكتاب تالف\n`;
-        }
-      }
-
-      // إرسال البيانات إلى تليجرام
-      try {
-        const response = await fetch(TELEGRAM_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-        });
-        
-        if (response.ok) {
-          alert("تم إرسال النموذج بنجاح إلى تليجرام!");
-        } else {
-          alert("فشل إرسال النموذج. الرجاء المحاولة مرة أخرى.");
-        }
-      } catch (error) {
-        alert("حدث خطأ أثناء إرسال النموذج إلى تليجرام.");
-      }
-    }
-  </script>
+    <footer>عمل الطالبة ليلى</footer>
+    <script src="script.js"></script>
 </body>
 </html>
