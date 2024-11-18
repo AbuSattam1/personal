@@ -3,80 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكتبة صلة للكتب الجديدة والمستخدمة</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>حساب الغياب - جامعة الملك خالد KKU</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #add8e6; /* أزرق فاتح */
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #336699;
+            font-size: 24px;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #336699;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #28527a;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .visitors-count {
+            margin-top: 30px;
+            font-size: 1.1em;
+            color: #006400; /* أخضر غامق */
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>نموذج مكتبة صلة</h1>
+    <h1>حساب الغياب - جامعة الملك خالد KKU</h1>
+
     <div class="container">
-        <form id="libraryForm">
-            <label for="fullName">الاسم الثلاثي:</label>
-            <input type="text" id="fullName" required>
-            
-            <label for="universityID">الرقم الجامعي:</label>
-            <input type="text" id="universityID" required pattern="\d*" maxlength="10">
+        <label for="language">اختر اللغة</label>
+        <select id="language" onchange="changeLanguage()">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+        </select>
 
-            <label for="phoneNumber">رقم الجوال:</label>
-            <input type="tel" id="phoneNumber" required pattern="\d*" maxlength="10">
-            
-            <label for="actionType">الاختيار:</label>
-            <select id="actionType" onchange="toggleFields()" required>
-                <option value="">اختر نوع المعاملة</option>
-                <option value="borrow">استعارة كتاب</option>
-                <option value="donate">إعارة كتاب</option>
-            </select>
+        <label for="attendance" id="attendanceLabel">نسبة الغياب لمادة واحدة (%)</label>
+        <input type="number" id="attendance" placeholder="أدخل نسبة الغياب" step="0.01" required>
 
-            <div id="borrowOptions" class="hidden">
-                <div class="section-header">خيارات الاستعارة</div>
-                <label for="loanType">نوع الاستعارة:</label>
-                <select id="loanType" onchange="toggleLoanDetails()" required>
-                    <option value="">اختر نوع الاستعارة</option>
-                    <option value="permanent">دائم</option>
-                    <option value="temporary">مؤقت</option>
-                </select>
+        <label for="type" id="typeLabel">نوع التخصص</label>
+        <select id="type" required>
+            <option value="normal">تخصص عادي</option>
+            <option value="health">التخصصات الصحية والمسار الهندسي</option>
+        </select>
 
-                <div id="permanentOptions" class="hidden">
-                    <p><strong>تعريف الاستعارة:</strong> الكتاب دائم ولا يسترجع ويوضع بداله كتاب آخر منك.</p>
-                    <label for="permanentBookName">اسم الكتاب المراد استعارته:</label>
-                    <input type="text" id="permanentBookName" required>
-                    
-                    <label for="replacementBookName">اسم الكتاب البديل:</label>
-                    <input type="text" id="replacementBookName" required>
-                </div>
-
-                <div id="temporaryOptions" class="hidden">
-                    <p><strong>تعريف الاستعارة:</strong> الكتاب مؤقت ويسترجع حسب سياسة مكتبة صلة.</p>
-                    <label for="temporaryBookName">اسم الكتاب المراد استعارته مؤقتاً:</label>
-                    <input type="text" id="temporaryBookName" required>
-
-                    <label for="loanEndDate">تاريخ انتهاء الاستعارة:</label>
-                    <input type="date" id="loanEndDate" required>
-                </div>
-            </div>
-
-            <div id="donateOptions" class="hidden">
-                <div class="section-header">خيارات الإعارة</div>
-                <p>إعطاء الكتاب للمكتبة.</p>
-                <label for="donatedBookName">اسم الكتاب:</label>
-                <input type="text" id="donatedBookName" required>
-
-                <label for="bookCondition">حالة الكتاب:</label>
-                <select id="bookCondition" required>
-                    <option value="">اختر حالة الكتاب</option>
-                    <option value="new">جديد</option>
-                    <option value="excellent">الكتاب في حالة ممتازة</option>
-                    <option value="average">الكتاب متوسط الحالة</option>
-                    <option value="damaged">الكتاب تالف</option>
-                </select>
-            </div>
-
-            <button type="button" onclick="submitForm()">إرسال</button>
-            <div id="responseMessage" class="message hidden"></div>
-            <div id="errorMessage" class="error hidden"></div>
-        </form>
+        <button onclick="calculateAbsence()" id="calculateButton">احسب نسبة الغياب</button>
+        
+        <div class="result" id="result"></div>
+        <div class="note" id="note">يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
     </div>
 
-    <footer>عمل الطالبة ليلى</footer>
-    <script src="script.js"></script>
+    <div class="disclaimer">
+        الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
+    </div>
+
+    <!-- عداد الزوار -->
+    <div class="visitors-count" id="visitorsCount">عدد المستفيدين: 0</div>
+
+    <script>
+        // تغيير اللغة
+        function changeLanguage() {
+            const lang = document.getElementById("language").value;
+            if (lang === "ar") {
+                document.getElementById("attendanceLabel").textContent = "نسبة الغياب لمادة واحدة (%)";
+                document.getElementById("typeLabel").textContent = "نوع التخصص";
+                document.getElementById("calculateButton").textContent = "احسب نسبة الغياب";
+                document.getElementById("note").textContent = "يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة 100%.";
+            } else {
+                document.getElementById("attendanceLabel").textContent = "Attendance Percentage for One Subject (%)";
+                document.getElementById("typeLabel").textContent = "Specialization Type";
+                document.getElementById("calculateButton").textContent = "Calculate Attendance Percentage";
+                document.getElementById("note").textContent = "Note: All calculations are approximate and not 100% accurate.";
+            }
+        }
+
+        // حساب نسبة الغياب
+        function calculateAbsence() {
+            const attendance = parseFloat(document.getElementById("attendance").value);
+            const type = document.getElementById("type").value;
+            const maxAbsence = (type === "normal") ? 25 : 20;
+
+            if (attendance > 0) {
+                const remainingDays = Math.floor(maxAbsence / attendance);
+                document.getElementById("result").innerHTML = `
+                    <p>نسبة الغياب المدخلة: (${attendance}%)</p>
+                    <p>يمكنك الغياب (${remainingDays}) أيام قبل الوصول للحرمان.</p>
+                `;
+            } else {
+                alert("يرجى إدخال نسبة غياب صحيحة.");
+            }
+        }
+
+        // عداد الزوار
+        function updateVisitorsCount() {
+            let visitorsCount = localStorage.getItem('visitorsCount');
+            
+            // تحقق إذا لم يكن العداد موجودًا مسبقًا
+            if (!visitorsCount) {
+                visitorsCount = 1;
+            } else {
+                visitorsCount = parseInt(visitorsCount) + 1;
+            }
+
+            // تحديث العداد في localStorage
+            localStorage.setItem('visitorsCount', visitorsCount);
+            
+            // عرض العداد في الصفحة
+            document.getElementById('visitorsCount').textContent = `عدد المستفيدين: ${visitorsCount}`;
+        }
+
+        // تحديث عداد الزوار عند تحميل الصفحة
+        window.onload = updateVisitorsCount;
+    </script>
 </body>
 </html>
