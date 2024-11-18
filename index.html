@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -43,15 +44,27 @@
             margin-top: 20px;
             font-weight: bold;
         }
-        .tips {
-            margin-top: 20px;
+        .warning1 {
+            color: red;
+        }
+        .warning2 {
+            color: red;
+            text-decoration: underline;
+        }
+        .warning3 {
+            color: darkred;
+            text-decoration: underline;
             font-weight: bold;
-            color: green;
         }
         .note {
             margin-top: 20px;
             font-size: 0.9em;
             color: #777;
+        }
+        .tips {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
         }
         .share-button {
             background-color: #FF5733;
@@ -64,10 +77,32 @@
         .share-button:hover {
             background-color: #c73720;
         }
-        .beneficiaries {
+        .group-rules {
+            background-color: #ffeb3b; /* لون خلفية أصفر */
+            border: 1px solid #fbc02d;
+            border-radius: 8px;
+            padding: 15px;
             margin-top: 20px;
-            font-size: 1.1em;
-            color: #006400;
+            color: #333;
+        }
+        .group-link {
+            color: #006400; /* أخضر غامق */
+            text-decoration: underline;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .empty-line {
+            margin-top: 10px; /* سطر فارغ */
+        }
+        .beneficiaries {
+            background-color: #e0f7fa; /* لون خلفية أزرق فاتح */
+            border: 1px solid #0097a7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #00796b; /* لون النص */
+            text-align: center;
         }
     </style>
 </head>
@@ -91,40 +126,48 @@
         </select>
 
         <button onclick="calculateAbsence()" id="calculateButton">احسب نسبة الغياب</button>
-
+        
         <div class="result" id="result"></div>
         <div class="tips" id="tips"></div>
         <div class="note" id="note">يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
 
         <button class="share-button" onclick="shareSite()">شارك الموقع</button>
+    </div>
 
-        <!-- عرض عدد المستفيدين -->
-        <div class="beneficiaries" id="beneficiariesCount"></div>
+    <div class="disclaimer">
+        الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
+    </div>
+    
+    <div class="image-link">
+        <a href="https://t.me/kku_4" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" width="100">
+        </a>
+    </div>
+    
+    <div class="group-note">
+        <span class="group-link">للدخول إلى مجموعة جامعة الملك خالد يرجى الضغط على الصورة</span>
+        <div class="empty-line"></div>
+        نود التنويه أن القروب من عمل طلاب متطوعين يهدف للإجابة على استفسارات الطلاب ولا يمثل جهة رسمية.
+    </div>
+
+    <div class="group-rules">
+        <strong>شروط القروب:</strong><br>
+        - يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها.<br>
+        - الأحاديث الجانبية ممنوعة.<br>
+        - السب والشتم والسخرية ممنوعة.<br>
+        - مخالفة شروط القروب يعرضك للطرد.
+    </div>
+
+    <!-- قسم لعرض عدد المستفيدين -->
+    <div class="beneficiaries">
+        <strong>عدد المستفيدين من الموقع:</strong>
+        <span id="beneficiariesCount">0</span> طالب وطالبة.
     </div>
 
     <script>
         let lastAttendance = 0;
         let lastRemainingDays = 0;
-
-        // تحديث عدد المستفيدين عند التحميل
-        function updateBeneficiaries() {
-            let count = localStorage.getItem('beneficiariesCount');
-            if (!count) {
-                count = 0;
-            }
-            document.getElementById('beneficiariesCount').textContent = `عدد المستفيدين من الموقع: ${count}`;
-        }
-
-        // زيادة عدد المستفيدين
-        function incrementBeneficiaries() {
-            let count = localStorage.getItem('beneficiariesCount');
-            if (!count) {
-                count = 0;
-            }
-            count = parseInt(count) + 1;
-            localStorage.setItem('beneficiariesCount', count);
-            updateBeneficiaries();
-        }
+        let beneficiariesCount = 0; // عداد المستفيدين
 
         function changeLanguage() {
             const lang = document.getElementById("language").value;
@@ -149,7 +192,7 @@
             const maxAbsence = (type === "normal") ? 25 : 20;
 
             if (attendance > 0) {
-                const remainingDays = Math.floor(maxAbsence / attendance);
+                const remainingDays = Math.floor(maxAbsence / attendance); // إزالة الأعداد العشرية
 
                 lastAttendance = attendance;
                 lastRemainingDays = remainingDays;
@@ -173,29 +216,32 @@
                     <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
                     <p class="${warningClass}">${warning}</p>
                 `;
-                
-                // زيادة عدد المستفيدين بعد كل حساب
-                incrementBeneficiaries();
+
                 provideTips(attendance);
+
+                // تحديث عدد المستفيدين
+                beneficiariesCount++;
+                document.getElementById("beneficiariesCount").textContent = beneficiariesCount;
             } else {
-                alert("يرجى إدخال نسبة غياب صحيحة.");
+                document.getElementById("result").innerHTML = `<p class="warning3">يرجى إدخال نسبة غياب صحيحة أكبر من 0.</p>`;
             }
         }
 
         function provideTips(attendance) {
-            let tips = "";
+            const tipsElement = document.getElementById("tips");
             if (attendance < 10) {
-                tips = "نصيحة: استمر في حضور المحاضرات للحفاظ على نسبة غياب منخفضة.";
-            } else if (attendance >= 10 && attendance < 20) {
-                tips = "نصيحة: حاول تقليل الغياب عن طريق تنظيم جدولك.";
+                tipsElement.textContent = "نوصي بالاستمرار في الحضور بانتظام.";
+            } else if (attendance >= 10 && attendance < 15) {
+                tipsElement.textContent = "حاول تحسين نسبة حضورك لتجنب الإنذارات.";
             } else {
-                tips = "نصيحة: تواصل مع دكاترتك للحصول على المساعدة إذا كنت تواجه صعوبات.";
+                tipsElement.textContent = "قد تحتاج إلى مراجعة دكتور المادة للحصول على المساعدة.";
             }
-            document.getElementById("tips").textContent = tips;
         }
 
-        // تحديث عدد المستفيدين عند تحميل الصفحة
-        window.onload = updateBeneficiaries;
+        function shareSite() {
+            // يمكنك إضافة وظيفة لمشاركة الموقع هنا
+            alert("شارك الموقع مع زملائك!");
+        }
     </script>
 </body>
 </html>
