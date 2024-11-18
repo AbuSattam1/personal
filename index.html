@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #add8e6;
+            background-color: #add8e6; /* أزرق فاتح */
             text-align: center;
             padding: 20px;
         }
@@ -43,29 +43,60 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .warning1 {
+            color: red;
+        }
+        .warning2 {
+            color: red;
+            text-decoration: underline;
+        }
+        .warning3 {
+            color: darkred;
+            text-decoration: underline;
+            font-weight: bold;
+        }
         .note {
             margin-top: 20px;
             font-size: 0.9em;
             color: #777;
         }
+        .tips {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+        .share-button {
+            background-color: #FF5733;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .share-button:hover {
+            background-color: #c73720;
+        }
         .group-rules {
-            background-color: #ffeb3b;
+            background-color: #ffeb3b; /* لون خلفية أصفر */
             border: 1px solid #fbc02d;
             border-radius: 8px;
             padding: 15px;
             margin-top: 20px;
             color: #333;
         }
-        .beneficiaries {
-            margin-top: 15px;
-            font-size: 1.1em;
-            color: #006400;
+        .group-link {
+            color: #006400; /* أخضر غامق */
+            text-decoration: underline;
             font-weight: bold;
+            margin-top: 10px;
+        }
+        .empty-line {
+            margin-top: 10px; /* سطر فارغ */
         }
     </style>
 </head>
 <body>
-    <h1>حساب الغياب - جامعة الملك خالد KKU</h1>
+    <h1>حساب عثعصهص - جامعة الملك خالد KKU</h1>
 
     <div class="container">
         <label for="language">اختر اللغة</label>
@@ -86,7 +117,26 @@
         <button onclick="calculateAbsence()" id="calculateButton">احسب نسبة الغياب</button>
         
         <div class="result" id="result"></div>
+        <div class="tips" id="tips"></div>
         <div class="note" id="note">يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
+
+        <button class="share-button" onclick="shareSite()">شارك الموقع</button>
+    </div>
+
+    <div class="disclaimer">
+        الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
+    </div>
+    
+    <div class="image-link">
+        <a href="https://t.me/kku_4" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" width="100">
+        </a>
+    </div>
+    
+    <div class="group-note">
+        <span class="group-link">للدخول إلى مجموعة جامعة الملك خالد يرجى الضغط على الصورة</span>
+        <div class="empty-line"></div>
+        نود التنويه أن القروب من عمل طلاب متطوعين يهدف للإجابة على استفسارات الطلاب ولا يمثل جهة رسمية.
     </div>
 
     <div class="group-rules">
@@ -97,78 +147,10 @@
         - مخالفة شروط القروب يعرضك للطرد.
     </div>
 
-    <!-- عدد المستفيدين -->
-    <div class="beneficiaries">
-        <p id="beneficiariesCount">عدد المستفيدين: 0</p>
-    </div>
+    <div id="userCount">عدد المستفيدين: 0</div> <!-- هذا هو مكان عرض عدد المستفيدين -->
 
-    <script>
-        let lastAttendance = 0;
-        let lastRemainingDays = 0;
+    <!-- ربط ملف firebase.js هنا -->
+    <script type="module" src="firebase.js"></script>
 
-        function changeLanguage() {
-            const lang = document.getElementById("language").value;
-            if (lang === "ar") {
-                document.getElementById("attendanceLabel").textContent = "نسبة الغياب لمادة واحدة (%)";
-                document.getElementById("typeLabel").textContent = "نوع التخصص";
-                document.getElementById("calculateButton").textContent = "احسب نسبة الغياب";
-                document.getElementById("note").textContent = "يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة 100%.";
-            } else {
-                document.getElementById("attendanceLabel").textContent = "Attendance Percentage for One Subject (%)";
-                document.getElementById("typeLabel").textContent = "Specialization Type";
-                document.getElementById("calculateButton").textContent = "Calculate Attendance Percentage";
-                document.getElementById("note").textContent = "Note: All calculations are approximate and not 100% accurate.";
-            }
-        }
-
-        function calculateAbsence() {
-            const attendance = parseFloat(document.getElementById("attendance").value);
-            const type = document.getElementById("type").value;
-            const maxAbsence = (type === "normal") ? 25 : 20;
-
-            if (attendance > 0) {
-                const remainingDays = Math.floor(maxAbsence / attendance);
-
-                lastAttendance = attendance;
-                lastRemainingDays = remainingDays;
-
-                let warning = "";
-                if (attendance >= 10 && attendance < 15) {
-                    warning = "تنبيه: وصلت إلى الإنذار الأول (10%)";
-                } else if (attendance >= 15 && attendance < maxAbsence) {
-                    warning = "تنبيه: وصلت إلى الإنذار الثاني (15%)";
-                } else if (attendance >= maxAbsence) {
-                    warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
-                }
-
-                document.getElementById("result").innerHTML = `
-                    <p>نسبة الغياب المدخلة: (${attendance}%)</p>
-                    <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
-                    <p>${warning}</p>
-                `;
-
-                incrementBeneficiaries();
-            } else {
-                alert("يرجى إدخال نسبة غياب صحيحة.");
-            }
-        }
-
-        // دالة لزيادة عدد المستفيدين
-        function incrementBeneficiaries() {
-            let beneficiariesCount = localStorage.getItem('beneficiariesCount');
-            if (!beneficiariesCount) {
-                beneficiariesCount = 0;
-            }
-            beneficiariesCount = parseInt(beneficiariesCount) + 1;
-            localStorage.setItem('beneficiariesCount', beneficiariesCount);
-            document.getElementById('beneficiariesCount').textContent = `عدد المستفيدين: ${beneficiariesCount}`;
-        }
-
-        // عرض عدد المستفيدين عند تحميل الصفحة
-        window.onload = function() {
-            const beneficiariesCount = localStorage.getItem('beneficiariesCount') || 0;
-            document.getElementById('beneficiariesCount').textContent = `عدد المستفيدين: ${beneficiariesCount}`;
-        }
-    </script>
 </body>
 </html>
