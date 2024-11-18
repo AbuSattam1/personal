@@ -43,32 +43,31 @@
             margin-top: 20px;
             font-weight: bold;
         }
-        .warning1 {
-            color: red;
-        }
-        .warning2 {
-            color: red;
-            text-decoration: underline;
-        }
-        .warning3 {
-            color: darkred;
-            text-decoration: underline;
+        .tips {
+            margin-top: 20px;
             font-weight: bold;
+            color: green;
         }
         .note {
             margin-top: 20px;
             font-size: 0.9em;
             color: #777;
         }
-        .tips {
-            margin-top: 20px;
-            font-weight: bold;
-            color: green;
+        .share-button {
+            background-color: #FF5733;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        .beneficiary-count {
-            margin-top: 15px;
-            font-weight: bold;
-            color: #006400; /* أخضر غامق */
+        .share-button:hover {
+            background-color: #c73720;
+        }
+        .beneficiaries {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #006400;
         }
     </style>
 </head>
@@ -92,17 +91,40 @@
         </select>
 
         <button onclick="calculateAbsence()" id="calculateButton">احسب نسبة الغياب</button>
-        
+
         <div class="result" id="result"></div>
         <div class="tips" id="tips"></div>
         <div class="note" id="note">يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
 
-        <div class="beneficiary-count" id="beneficiaryCount">عدد المستفيدين: 0</div>
+        <button class="share-button" onclick="shareSite()">شارك الموقع</button>
+
+        <!-- عرض عدد المستفيدين -->
+        <div class="beneficiaries" id="beneficiariesCount"></div>
     </div>
 
     <script>
         let lastAttendance = 0;
         let lastRemainingDays = 0;
+
+        // تحديث عدد المستفيدين عند التحميل
+        function updateBeneficiaries() {
+            let count = localStorage.getItem('beneficiariesCount');
+            if (!count) {
+                count = 0;
+            }
+            document.getElementById('beneficiariesCount').textContent = `عدد المستفيدين من الموقع: ${count}`;
+        }
+
+        // زيادة عدد المستفيدين
+        function incrementBeneficiaries() {
+            let count = localStorage.getItem('beneficiariesCount');
+            if (!count) {
+                count = 0;
+            }
+            count = parseInt(count) + 1;
+            localStorage.setItem('beneficiariesCount', count);
+            updateBeneficiaries();
+        }
 
         function changeLanguage() {
             const lang = document.getElementById("language").value;
@@ -151,9 +173,10 @@
                     <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
                     <p class="${warningClass}">${warning}</p>
                 `;
-
+                
+                // زيادة عدد المستفيدين بعد كل حساب
+                incrementBeneficiaries();
                 provideTips(attendance);
-                updateBeneficiaryCount();
             } else {
                 alert("يرجى إدخال نسبة غياب صحيحة.");
             }
@@ -171,17 +194,8 @@
             document.getElementById("tips").textContent = tips;
         }
 
-        function updateBeneficiaryCount() {
-            let count = parseInt(localStorage.getItem('beneficiaryCount')) || 0;
-            count++;
-            localStorage.setItem('beneficiaryCount', count);
-            document.getElementById('beneficiaryCount').textContent = `عدد المستفيدين: ${count}`;
-        }
-
-        window.onload = function() {
-            const count = localStorage.getItem('beneficiaryCount') || 0;
-            document.getElementById('beneficiaryCount').textContent = `عدد المستفيدين: ${count}`;
-        };
+        // تحديث عدد المستفيدين عند تحميل الصفحة
+        window.onload = updateBeneficiaries;
     </script>
 </body>
 </html>
