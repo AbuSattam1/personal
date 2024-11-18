@@ -43,16 +43,32 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .warning1 {
+            color: red;
+        }
+        .warning2 {
+            color: red;
+            text-decoration: underline;
+        }
+        .warning3 {
+            color: darkred;
+            text-decoration: underline;
+            font-weight: bold;
+        }
         .note {
             margin-top: 20px;
             font-size: 0.9em;
             color: #777;
         }
-        .visitors-count {
-            margin-top: 30px;
-            font-size: 1.1em;
-            color: #006400; /* أخضر غامق */
+        .tips {
+            margin-top: 20px;
             font-weight: bold;
+            color: green;
+        }
+        .beneficiary-count {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #006400; /* أخضر غامق */
         }
     </style>
 </head>
@@ -78,18 +94,16 @@
         <button onclick="calculateAbsence()" id="calculateButton">احسب نسبة الغياب</button>
         
         <div class="result" id="result"></div>
+        <div class="tips" id="tips"></div>
         <div class="note" id="note">يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
-    </div>
 
-    <div class="disclaimer">
-        الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
+        <div class="beneficiary-count" id="beneficiaryCount">عدد المستفيدين: 0</div>
     </div>
-
-    <!-- عداد الزوار -->
-    <div class="visitors-count" id="visitorsCount">عدد المستفيدين: 0</div>
 
     <script>
-        // تغيير اللغة
+        let lastAttendance = 0;
+        let lastRemainingDays = 0;
+
         function changeLanguage() {
             const lang = document.getElementById("language").value;
             if (lang === "ar") {
@@ -97,15 +111,16 @@
                 document.getElementById("typeLabel").textContent = "نوع التخصص";
                 document.getElementById("calculateButton").textContent = "احسب نسبة الغياب";
                 document.getElementById("note").textContent = "يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة 100%.";
+                document.getElementById("tips").textContent = "";
             } else {
                 document.getElementById("attendanceLabel").textContent = "Attendance Percentage for One Subject (%)";
                 document.getElementById("typeLabel").textContent = "Specialization Type";
                 document.getElementById("calculateButton").textContent = "Calculate Attendance Percentage";
                 document.getElementById("note").textContent = "Note: All calculations are approximate and not 100% accurate.";
+                document.getElementById("tips").textContent = "";
             }
         }
 
-        // حساب نسبة الغياب
         function calculateAbsence() {
             const attendance = parseFloat(document.getElementById("attendance").value);
             const type = document.getElementById("type").value;
@@ -113,35 +128,60 @@
 
             if (attendance > 0) {
                 const remainingDays = Math.floor(maxAbsence / attendance);
+
+                lastAttendance = attendance;
+                lastRemainingDays = remainingDays;
+
+                let warning = "";
+                let warningClass = "";
+
+                if (attendance >= 10 && attendance < 15) {
+                    warning = "تنبيه: وصلت إلى الإنذار الأول (10%)";
+                    warningClass = "warning1";
+                } else if (attendance >= 15 && attendance < maxAbsence) {
+                    warning = "تنبيه: وصلت إلى الإنذار الثاني (15%)";
+                    warningClass = "warning2";
+                } else if (attendance >= maxAbsence) {
+                    warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
+                    warningClass = "warning3";
+                }
+
                 document.getElementById("result").innerHTML = `
                     <p>نسبة الغياب المدخلة: (${attendance}%)</p>
-                    <p>يمكنك الغياب (${remainingDays}) أيام قبل الوصول للحرمان.</p>
+                    <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
+                    <p class="${warningClass}">${warning}</p>
                 `;
+
+                provideTips(attendance);
+                updateBeneficiaryCount();
             } else {
                 alert("يرجى إدخال نسبة غياب صحيحة.");
             }
         }
 
-        // عداد الزوار
-        function updateVisitorsCount() {
-            let visitorsCount = localStorage.getItem('visitorsCount');
-            
-            // تحقق إذا لم يكن العداد موجودًا مسبقًا
-            if (!visitorsCount) {
-                visitorsCount = 1;
+        function provideTips(attendance) {
+            let tips = "";
+            if (attendance < 10) {
+                tips = "نصيحة: استمر في حضور المحاضرات للحفاظ على نسبة غياب منخفضة.";
+            } else if (attendance >= 10 && attendance < 20) {
+                tips = "نصيحة: حاول تقليل الغياب عن طريق تنظيم جدولك.";
             } else {
-                visitorsCount = parseInt(visitorsCount) + 1;
+                tips = "نصيحة: تواصل مع دكاترتك للحصول على المساعدة إذا كنت تواجه صعوبات.";
             }
-
-            // تحديث العداد في localStorage
-            localStorage.setItem('visitorsCount', visitorsCount);
-            
-            // عرض العداد في الصفحة
-            document.getElementById('visitorsCount').textContent = `عدد المستفيدين: ${visitorsCount}`;
+            document.getElementById("tips").textContent = tips;
         }
 
-        // تحديث عداد الزوار عند تحميل الصفحة
-        window.onload = updateVisitorsCount;
+        function updateBeneficiaryCount() {
+            let count = parseInt(localStorage.getItem('beneficiaryCount')) || 0;
+            count++;
+            localStorage.setItem('beneficiaryCount', count);
+            document.getElementById('beneficiaryCount').textContent = `عدد المستفيدين: ${count}`;
+        }
+
+        window.onload = function() {
+            const count = localStorage.getItem('beneficiaryCount') || 0;
+            document.getElementById('beneficiaryCount').textContent = `عدد المستفيدين: ${count}`;
+        };
     </script>
 </body>
 </html>
