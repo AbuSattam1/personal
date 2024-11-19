@@ -3,241 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مجموعة جامعة الملك خالد</title>
+    <title>حساب الغياب - جامعة الملك خالد KKU</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff;
-        }
-
-        /* القائمة الجانبية */
-        .sidebar {
-            width: 250px;
-            background-color: #006400;
-            color: white;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: -250px; /* مخفية في البداية */
-            padding: 20px;
-            transition: left 0.3s;
-            z-index: 1000;
-        }
-
-        .sidebar h2 {
+            background-color: #add8e6; /* أزرق فاتح */
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            margin: 5px 0;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #004b33;
-        }
-
-        /* زر القائمة */
-        .menu-icon {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: #006400;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1100;
-        }
-
-        /* المحتوى */
-        .content {
             padding: 20px;
         }
-
-        .page {
-            display: none; /* جميع الصفحات مخفية افتراضياً */
-        }
-
-        .page.active {
-            display: block; /* الصفحة النشطة فقط مرئية */
-        }
-
-        /* تنسيقات خاصة بحساب الغياب */
         h1 {
-            color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 20px;
-            text-align: center;
+            color: #336699;
+            font-size: 24px;
         }
-
         .container {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 450px;
+            padding: 20px;
+            max-width: 400px;
             margin: auto;
         }
-
         input, select, button {
             width: 100%;
-            padding: 12px;
-            margin: 12px 0;
+            padding: 10px;
+            margin: 10px 0;
             border-radius: 5px;
-            border: 1px solid #ddd;
-            font-size: 16px;
+            border: 1px solid #ccc;
         }
-
         button {
-            background-color: #2c3e50;
+            background-color: #336699;
             color: #fff;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
-
         button:hover {
-            background-color: #1a252f;
+            background-color: #28527a;
         }
-
         .result {
             margin-top: 20px;
             font-weight: bold;
         }
+        .warning1 {
+            color: red;
+        }
+        .warning2 {
+            color: red;
+            text-decoration: underline;
+        }
+        .warning3 {
+            color: darkred;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .tips {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+        .share-button {
+            background-color: #FF5733;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .share-button:hover {
+            background-color: #c73720;
+        }
+        .group-rules {
+            background-color: #ffeb3b; /* لون خلفية أصفر */
+            border: 1px solid #fbc02d;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .group-link {
+            color: #006400; /* أخضر غامق */
+            text-decoration: underline;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .empty-line {
+            margin-top: 10px; /* سطر فارغ */
+        }
 
-        .warning1 { color: #ff9800; }
-        .warning2 { color: #e91e63; text-decoration: underline; }
-        .warning3 { color: #d32f2f; font-weight: bold; }
-        canvas {
-            margin-top: 30px;
+        /* شاشة منبثقة */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            position: relative;
+        }
+
+        .popup img {
+            width: 150px; /* تصغير حجم الصورة */
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .popup.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .group-rules-popup {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        /* زر إغلاق صغير */
+        .close-button {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 5px 15px; /* تصغير حجم الزر */
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px; /* إضافة مسافة من الأعلى */
+            font-size: 0.8em; /* تصغير النص */
+        }
+
+        .close-button:hover {
+            background-color: #cc0000;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- زر القائمة -->
-    <button class="menu-icon" onclick="toggleSidebar()">☰</button>
+    <h1>حساب الغياب - جامعة الملك خالد KKU</h1>
 
-    <!-- القائمة الجانبية -->
-    <div class="sidebar" id="sidebar">
-        <h2>القائمة الجانبية</h2>
-        <a href="#home" onclick="showPage('home')">الصفحة الرئيسية</a>
-        <a href="#absence" onclick="showPage('absence')">أحسب غيابك</a>
+    <div class="container">
+        <label for="language">اختر اللغة</label>
+        <select id="language" onchange="changeLanguage()">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+        </select>
+
+        <label for="attendance" id="attendanceLabel">نسبة الغياب لمادة واحدة (%)</label>
+        <input type="number" id="attendance" placeholder="أدخل نسبة الغياب" step="0.01" required>
+
+        <label for="type" id="typeLabel">نوع التخصص</label>
+        <select id="type" required>
+            <option value="normal">تخصص عادي</option>
+            <option value="health">التخصصات الصحية والمسار الهندسي</option>
+        </select>
+
+        <button onclick="calculateAbsence()" id="calculateButton">احسب نسبة الغياب</button>
+        
+        <div class="result" id="result"></div>
+        <div class="tips" id="tips"></div>
+        <div class="note" id="note">يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
+
+        <button class="share-button" onclick="shareSite()">شارك الموقع</button>
     </div>
 
-    <!-- المحتوى -->
-    <div class="content">
-        <!-- الصفحة الرئيسية -->
-        <div id="home" class="page active">
-            <h1>مرحباً بك في موقع جامعة الملك خالد</h1>
-            <p>صفحة رئيسية للمحتوى العام.</p>
-        </div>
+    <div class="disclaimer">
+        الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
+    </div>
 
-        <!-- صفحة حساب الغياب -->
-        <div id="absence" class="page">
-            <h1>حساب الغياب</h1>
-            <div class="container">
-                <label for="attendance">نسبة الغياب لمادة واحدة (%)</label>
-                <input type="number" id="attendance" placeholder="أدخل نسبة الغياب" step="0.01">
-
-                <label for="type">نوع التخصص</label>
-                <select id="type">
-                    <option value="normal">تخصص عادي</option>
-                    <option value="health">التخصصات الصحية والمسار الهندسي</option>
-                </select>
-
-                <button onclick="calculateAbsence()">احسب نسبة الغياب</button>
-                <div class="result" id="result"></div>
-                <canvas id="absenceChart"></canvas>
+    <!-- شاشة منبثقة -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <a href="https://t.me/kku_4" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد">
+            </a>
+            <p>للدخول إلى مجموعة جامعة الملك خالد يرجى الضغط على الصورة</p>
+            <div class="empty-line"></div>
+            <p>نود التنويه أن القروب من عمل طلاب متطوعين يهدف للإجابة على استفسارات الطلاب ولا يمثل جهة رسمية.</p>
+            
+            <div class="group-rules-popup">
+                <strong>شروط القروب:</strong><br>
+                - يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها.<br>
+                - الأحاديث الجانبية ممنوعة.<br>
+                - السب والشتم والسخرية ممنوعة.<br>
+                - مخالفة شروط القروب يعرضك للطرد.
             </div>
+
+            <!-- زر إغلاق صغير -->
+            <button class="close-button" onclick="closePopup()">إغلاق</button>
         </div>
     </div>
 
     <script>
-        // إظهار وإخفاء القائمة الجانبية
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            if (sidebar.style.left === "0px") {
-                sidebar.style.left = "-250px";
+        // إظهار الشاشة المنبثقة عند تحميل الصفحة
+        window.onload = function() {
+            var popup = document.getElementById("popup");
+            popup.classList.add("show");
+        };
+
+        // دالة لإغلاق الشاشة المنبثقة
+        function closePopup() {
+            var popup = document.getElementById("popup");
+            popup.classList.remove("show");
+        }
+
+        function changeLanguage() {
+            const lang = document.getElementById("language").value;
+            if (lang === "ar") {
+                document.getElementById("attendanceLabel").textContent = "نسبة الغياب لمادة واحدة (%)";
+                document.getElementById("typeLabel").textContent = "نوع التخصص";
+                document.getElementById("calculateButton").textContent = "احسب نسبة الغياب";
+                document.getElementById("note").textContent = "يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة 100%.";
+                document.getElementById("tips").textContent = "";
             } else {
-                sidebar.style.left = "0px";
+                document.getElementById("attendanceLabel").textContent = "Attendance Percentage for One Subject (%)";
+                document.getElementById("typeLabel").textContent = "Specialization Type";
+                document.getElementById("calculateButton").textContent = "Calculate Attendance Percentage";
+                document.getElementById("note").textContent = "Note: All calculations are approximate and not 100% accurate.";
+                document.getElementById("tips").textContent = "";
             }
         }
-
-        // عرض الصفحة المحددة
-        function showPage(pageId) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            toggleSidebar(); // إغلاق القائمة بعد الاختيار
-        }
-
-        // حساب الغياب
-        let absenceChart;
 
         function calculateAbsence() {
             const attendance = parseFloat(document.getElementById("attendance").value);
             const type = document.getElementById("type").value;
-            const maxAbsence = type === "normal" ? 25 : 20;
+            const maxAbsence = (type === "normal") ? 25 : 20;
 
-            if (!attendance || attendance < 0) {
+            if (attendance > 0) {
+                const remainingDays = Math.floor(maxAbsence / attendance); // إزالة الأعداد العشرية
+
+                lastAttendance = attendance;
+                lastRemainingDays = remainingDays;
+
+                let warning = "";
+                let warningClass = "";
+
+                if (attendance >= 10 && attendance < 15) {
+                    warning = "تنبيه: وصلت إلى الإنذار الأول (10%)";
+                    warningClass = "warning1";
+                } else if (attendance >= 15 && attendance < maxAbsence) {
+                    warning = "تنبيه: وصلت إلى الإنذار الثاني (15%)";
+                    warningClass = "warning2";
+                } else if (attendance >= maxAbsence) {
+                    warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
+                    warningClass = "warning3";
+                }
+
+                document.getElementById("result").innerHTML = `
+                    <p>نسبة الغياب المدخلة: (${attendance}%)</p>
+                    <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
+                    <p class="${warningClass}">${warning}</p>
+                `;
+
+                provideTips(attendance);
+            } else {
                 alert("يرجى إدخال نسبة غياب صحيحة.");
-                return;
             }
-
-            const remainingDays = Math.floor(maxAbsence / attendance);
-            let warning = "";
-            let warningClass = "";
-
-            if (attendance >= 10 && attendance < 15) {
-                warning = "تنبيه: وصلت إلى الإنذار الأول (10%)";
-                warningClass = "warning1";
-            } else if (attendance >= 15 && attendance < maxAbsence) {
-                warning = "تنبيه: وصلت إلى الإنذار الثاني (15%)";
-                warningClass = "warning2";
-            } else if (attendance >= maxAbsence) {
-                warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
-                warningClass = "warning3";
-            }
-
-            document.getElementById("result").innerHTML = `
-                <p>نسبة الغياب: ${attendance}%</p>
-                <p>متبقي لك ${remainingDays} محاضرة قبل الوصول للحرمان.</p>
-                <p class="${warningClass}">${warning}</p>
-            `;
-
-            updateChart(attendance, maxAbsence);
         }
 
-        function updateChart(attendance, maxAbsence) {
-            const ctx = document.getElementById('absenceChart').getContext('2d');
-            if (absenceChart) absenceChart.destroy();
-            absenceChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['نسبة الغياب', 'المتبقي'],
-                    datasets: [{
-                        data: [attendance, maxAbsence - attendance],
-                        backgroundColor: ['#FF6347', '#90EE90']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: { enabled: true }
-                    }
-                }
-            });
+        function provideTips(attendance) {
+            let tips = "";
+            if (attendance < 10) {
+                tips = "نصيحة: استمر في حضور المحاضرات للحفاظ على نسبة غياب منخفضة.";
+            } else if (attendance >= 10 && attendance < 20) {
+                tips = "نصيحة: حاول تقليل الغياب عن طريق تنظيم جدولك.";
+            } else {
+                tips = "نصيحة: تواصل مع دكاترتك للحصول على المساعدة إذا كنت تواجه صعوبات.";
+            }
+            document.getElementById("tips").textContent = tips;
+        }
+
+        function shareSite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'شارك نسبة غيابك',
+                    text: `نسبة غيابي: ${lastAttendance}% 
+                    
+يمكنني الغياب في ${lastRemainingDays} محاضرة قبل الوصول للحرمان.
+يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).
+
+موقع حساب الغياب لجامعة الملك خالد KKU:
+
+علمًا إن (الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.)
+`,
+                    url: window.location.href
+                }).catch(error => console.log('Error sharing:', error));
+            } else {
+                alert('مشاركة الموقع غير مدعومة في متصفحك');
+            }
         }
     </script>
 </body>
