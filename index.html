@@ -20,7 +20,6 @@
             margin-bottom: 20px;
         }
 
-        /* إضافة الشعار في أعلى الصفحة */
         .logo {
             width: 120px;
             margin-bottom: 10px;
@@ -33,20 +32,19 @@
             padding: 20px;
             max-width: 400px;
             margin: auto;
-            border: 1px solid #66cc66; /* أخضر فاتح */
+            border: 1px solid #66cc66;
         }
 
-        /* تعديل الحقول لتكون بنفس الطول */
         input, select, button {
-            width: calc(100% - 20px); /* تعديل الطول ليكون متناسقًا داخل المربع */
+            width: calc(100% - 20px);
             padding: 12px;
             margin: 10px 0;
             border-radius: 8px;
-            border: 1px solid #66cc66; /* أخضر فاتح */
+            border: 1px solid #66cc66;
         }
 
         button {
-            background-color: #33cc33; /* أخضر متوسط */
+            background-color: #33cc33;
             color: #fff;
             border: none;
             cursor: pointer;
@@ -55,7 +53,7 @@
         }
 
         button:hover {
-            background-color: #28a745; /* أخضر داكن عند التمرير */
+            background-color: #28a745;
         }
 
         .result {
@@ -64,7 +62,7 @@
         }
 
         .warning1 {
-            color: #ff3300; /* أحمر */
+            color: #ff3300;
         }
 
         .warning2 {
@@ -73,7 +71,7 @@
         }
 
         .warning3 {
-            color: #cc0000; /* أحمر داكن */
+            color: #cc0000;
             text-decoration: underline;
             font-weight: bold;
         }
@@ -81,17 +79,17 @@
         .note {
             margin-top: 20px;
             font-size: 0.9em;
-            color: #666666; /* رمادي */
+            color: #666666;
         }
 
         .tips {
             margin-top: 20px;
             font-weight: bold;
-            color: #006600; /* أخضر داكن */
+            color: #006600;
         }
 
         .share-button {
-            background-color: #28a745; /* أخضر داكن */
+            background-color: #28a745;
             color: #fff;
             border: none;
             padding: 12px;
@@ -101,39 +99,13 @@
         }
 
         .share-button:hover {
-            background-color: #218838; /* أخضر داكن أكثر */
+            background-color: #218838;
         }
 
-        .group-rules {
-            background-color: #ccffcc; /* أخضر فاتح جدًا */
-            border: 1px solid #99cc99; /* أخضر فاتح */
-            border-radius: 10px;
-            padding: 15px;
+        .chart-container {
             margin-top: 20px;
-            color: #004d00; /* أخضر داكن */
-            text-align: left;
-        }
-
-        .group-link {
-            color: #004d00; /* أخضر داكن */
-            text-decoration: underline;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .empty-line {
-            margin-top: 10px;
-        }
-
-        /* تحسين قائمة الشروط */
-        .group-rules ul {
-            list-style-type: disc;
-            padding-left: 20px;
-            margin-top: 10px;
-        }
-
-        .group-rules li {
-            margin-bottom: 5px;
+            width: 100%;
+            max-width: 600px;
         }
 
         /* شاشة منبثقة */
@@ -149,7 +121,12 @@
             align-items: center;
             visibility: hidden;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .popup.show {
+            visibility: visible;
+            opacity: 1;
         }
 
         .popup-content {
@@ -168,12 +145,6 @@
             margin-bottom: 15px;
         }
 
-        .popup.show {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* تحسين صندوق الشروط في الشاشة المنبثقة */
         .group-rules-popup {
             margin-top: 20px;
             text-align: right;
@@ -184,7 +155,6 @@
             border-radius: 10px;
         }
 
-        /* تحسين قائمة الشروط داخل الشاشة المنبثقة */
         .group-rules-popup ul {
             list-style-type: disc;
             padding-left: 20px;
@@ -195,7 +165,6 @@
             margin-bottom: 8px;
         }
 
-        /* زر إغلاق صغير */
         .close-button {
             background-color: #ff4444; /* أحمر */
             color: #fff;
@@ -210,13 +179,6 @@
 
         .close-button:hover {
             background-color: #cc0000; /* أحمر داكن */
-        }
-
-        /* تخصيص الرسم البياني */
-        .chart-container {
-            margin-top: 20px;
-            width: 100%;
-            max-width: 600px;
         }
     </style>
 </head>
@@ -261,6 +223,7 @@
     <div class="disclaimer">
         الموقع من عمل طلاب متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
     </div>
+
     <!-- شاشة منبثقة -->
     <div id="popup" class="popup">
         <div class="popup-content">
@@ -287,14 +250,14 @@
     </div>
 
     <script>
-    window.onload = function() {
+        window.onload = function() {
             var popup = document.getElementById("popup");
-            popup.classList.add("show");
+            popup.classList.add("show"); // إظهار الشاشة المنبثقة عند تحميل الصفحة
         };
 
         function closePopup() {
             var popup = document.getElementById("popup");
-            popup.classList.remove("show");
+            popup.classList.remove("show"); // إخفاء الشاشة المنبثقة عند النقر على زر الإغلاق
         }
 
         let lastAttendance = 0;
@@ -322,7 +285,7 @@
             const attendance = parseFloat(document.getElementById("attendance").value);
             const type = document.getElementById("type").value;
             const maxAbsence = (type === "normal") ? 25 : 20;
-            const warningLevels = { first: 10, second: 15 };
+            const warningLevels = { first: (type === "normal") ? 10 : 8, second: (type === "normal") ? 15 : 12 };
 
             if (attendance > 0) {
                 const remainingDays = Math.floor(maxAbsence / attendance);
@@ -334,10 +297,10 @@
                 let warningClass = "";
 
                 if (attendance >= warningLevels.first && attendance < warningLevels.second) {
-                    warning = "تنبيه: وصلت إلى الإنذار الأول (10%)";
+                    warning = `تنبيه: وصلت إلى الإنذار الأول (${warningLevels.first}%)`;
                     warningClass = "warning1";
                 } else if (attendance >= warningLevels.second && attendance < maxAbsence) {
-                    warning = "تنبيه: وصلت إلى الإنذار الثاني (15%)";
+                    warning = `تنبيه: وصلت إلى الإنذار الثاني (${warningLevels.second}%)`;
                     warningClass = "warning2";
                 } else if (attendance >= maxAbsence) {
                     warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
@@ -375,7 +338,7 @@
             const secondWarning = warningLevels.second;
 
             const data = {
-                labels: ['نسبة الحضور', 'إنذار أول (10%)', 'إنذار ثاني (15%)', 'الحرمان (25%)'],
+                labels: ['نسبة الحضور', `إنذار أول (${warningLevels.first}%)`, `إنذار ثاني (${warningLevels.second}%)`, `الحرمان (${maxAbsence}%)`],
                 datasets: [{
                     label: 'نسبة الغياب',
                     data: [attendance, firstWarning, secondWarning, maxAbsence],
