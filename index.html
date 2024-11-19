@@ -7,91 +7,132 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #add8e6; /* أزرق فاتح */
+            background-color: #e6f7e6; /* أخضر فاتح */
             text-align: center;
             padding: 20px;
+            color: #004d00; /* أخضر داكن */
         }
+
         h1 {
-            color: #336699;
-            font-size: 24px;
+            color: #006600; /* أخضر داكن */
+            font-size: 26px;
+            margin-bottom: 20px;
         }
+
+        /* إضافة الشعار في أعلى الصفحة */
+        .logo {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+
         .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 128, 0, 0.15);
             padding: 20px;
             max-width: 400px;
             margin: auto;
+            border: 1px solid #66cc66; /* أخضر فاتح */
         }
+
+        /* تعديل الحقول لتكون بنفس الطول */
         input, select, button {
-            width: 100%;
-            padding: 10px;
+            width: calc(100% - 20px); /* تعديل الطول ليكون متناسقًا داخل المربع */
+            padding: 12px;
             margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            border-radius: 8px;
+            border: 1px solid #66cc66; /* أخضر فاتح */
         }
+
         button {
-            background-color: #336699;
+            background-color: #33cc33; /* أخضر متوسط */
             color: #fff;
             border: none;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
+
         button:hover {
-            background-color: #28527a;
+            background-color: #28a745; /* أخضر داكن عند التمرير */
         }
+
         .result {
             margin-top: 20px;
             font-weight: bold;
         }
+
         .warning1 {
-            color: red;
+            color: #ff3300; /* أحمر */
         }
+
         .warning2 {
-            color: red;
+            color: #ff3300;
             text-decoration: underline;
         }
+
         .warning3 {
-            color: darkred;
+            color: #cc0000; /* أحمر داكن */
             text-decoration: underline;
             font-weight: bold;
         }
+
         .note {
             margin-top: 20px;
             font-size: 0.9em;
-            color: #777;
+            color: #666666; /* رمادي */
         }
+
         .tips {
             margin-top: 20px;
             font-weight: bold;
-            color: green;
+            color: #006600; /* أخضر داكن */
         }
+
         .share-button {
-            background-color: #FF5733;
+            background-color: #28a745; /* أخضر داكن */
             color: #fff;
             border: none;
-            padding: 10px;
+            padding: 12px;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.3s ease;
         }
+
         .share-button:hover {
-            background-color: #c73720;
+            background-color: #218838; /* أخضر داكن أكثر */
         }
+
         .group-rules {
-            background-color: #ffeb3b; /* لون خلفية أصفر */
-            border: 1px solid #fbc02d;
-            border-radius: 8px;
+            background-color: #ccffcc; /* أخضر فاتح جدًا */
+            border: 1px solid #99cc99; /* أخضر فاتح */
+            border-radius: 10px;
             padding: 15px;
             margin-top: 20px;
-            color: #333;
+            color: #004d00; /* أخضر داكن */
+            text-align: left;
         }
+
         .group-link {
-            color: #006400; /* أخضر غامق */
+            color: #004d00; /* أخضر داكن */
             text-decoration: underline;
             font-weight: bold;
             margin-top: 10px;
         }
+
         .empty-line {
-            margin-top: 10px; /* سطر فارغ */
+            margin-top: 10px;
+        }
+
+        /* تحسين قائمة الشروط */
+        .group-rules ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .group-rules li {
+            margin-bottom: 5px;
         }
 
         /* شاشة منبثقة */
@@ -111,16 +152,17 @@
         }
 
         .popup-content {
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
-            width: 300px;
+            width: 350px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             position: relative;
         }
 
         .popup img {
-            width: 150px; /* تصغير حجم الصورة */
+            width: 120px; /* الشعار بحجم متوسط */
             cursor: pointer;
             margin-bottom: 15px;
         }
@@ -130,31 +172,52 @@
             opacity: 1;
         }
 
+        /* تحسين صندوق الشروط في الشاشة المنبثقة */
         .group-rules-popup {
             margin-top: 20px;
             text-align: right;
             font-size: 0.9em;
-            color: #333;
+            background-color: #28a745; /* أخضر داكن */
+            color: #ffffff; /* النص باللون الأبيض */
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        /* تحسين قائمة الشروط داخل الشاشة المنبثقة */
+        .group-rules-popup ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .group-rules-popup li {
+            margin-bottom: 8px;
         }
 
         /* زر إغلاق صغير */
         .close-button {
-            background-color: #ff0000;
+            background-color: #ff4444; /* أحمر */
             color: #fff;
             border: none;
-            padding: 5px 15px; /* تصغير حجم الزر */
+            padding: 8px 20px;
             cursor: pointer;
             border-radius: 5px;
-            margin-top: 20px; /* إضافة مسافة من الأعلى */
-            font-size: 0.8em; /* تصغير النص */
+            margin-top: 15px;
+            font-size: 0.8em;
+            transition: background-color 0.3s ease;
         }
 
         .close-button:hover {
-            background-color: #cc0000;
+            background-color: #cc0000; /* أحمر داكن */
         }
     </style>
 </head>
 <body>
+    <!-- جعل الصورة قابلة للنقر لتوجيه المستخدم إلى رابط القروب -->
+    <a href="https://t.me/kku_4" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
+    </a>
+
     <h1>حساب الغياب - جامعة الملك خالد KKU</h1>
 
     <div class="container">
@@ -197,11 +260,13 @@
             <p>نود التنويه أن القروب من عمل طلاب متطوعين يهدف للإجابة على استفسارات الطلاب ولا يمثل جهة رسمية.</p>
             
             <div class="group-rules-popup">
-                <strong>شروط القروب:</strong><br>
-                - يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها.<br>
-                - الأحاديث الجانبية ممنوعة.<br>
-                - السب والشتم والسخرية ممنوعة.<br>
-                - مخالفة شروط القروب يعرضك للطرد.
+                <strong>شروط القروب:</strong>
+                <ul>
+                    <li>يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها.</li>
+                    <li>الأحاديث الجانبية ممنوعة.</li>
+                    <li>السب والشتم والسخرية ممنوعة.</li>
+                    <li>مخالفة شروط القروب يعرضك للطرد.</li>
+                </ul>
             </div>
 
             <!-- زر إغلاق صغير -->
@@ -210,13 +275,11 @@
     </div>
 
     <script>
-        // إظهار الشاشة المنبثقة عند تحميل الصفحة
         window.onload = function() {
             var popup = document.getElementById("popup");
             popup.classList.add("show");
         };
 
-        // دالة لإغلاق الشاشة المنبثقة
         function closePopup() {
             var popup = document.getElementById("popup");
             popup.classList.remove("show");
@@ -245,7 +308,7 @@
             const maxAbsence = (type === "normal") ? 25 : 20;
 
             if (attendance > 0) {
-                const remainingDays = Math.floor(maxAbsence / attendance); // إزالة الأعداد العشرية
+                const remainingDays = Math.floor(maxAbsence / attendance);
 
                 lastAttendance = attendance;
                 lastRemainingDays = remainingDays;
