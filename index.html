@@ -285,7 +285,7 @@
             const attendance = parseFloat(document.getElementById("attendance").value);
             const type = document.getElementById("type").value;
             const maxAbsence = (type === "normal") ? 25 : 20;
-            const warningLevels = { first: (type === "normal") ? 10 : 8, second: (type === "normal") ? 15 : 12 };
+            const warningLevels = { first: 10, second: 15 };
 
             if (attendance > 0) {
                 const remainingDays = Math.floor(maxAbsence / attendance);
