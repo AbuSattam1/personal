@@ -17,12 +17,14 @@
             text-align: center;
             padding: 20px;
             color: #004d00;
+            direction: rtl; /* جعل الاتجاه من اليمين إلى اليسار */
         }
 
         h1 {
             color: #006600;
             font-size: 26px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .logo {
@@ -38,6 +40,7 @@
             max-width: 400px;
             margin: auto;
             border: 1px solid #66cc66;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         input,
@@ -87,12 +90,14 @@
             margin-top: 20px;
             font-size: 0.9em;
             color: #666666;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .tips {
             margin-top: 20px;
             font-weight: bold;
             color: #006600;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .share-button {
@@ -103,6 +108,7 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.3s ease;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .share-button:hover {
@@ -223,10 +229,11 @@
             margin-top: 20px;
             font-size: 0.9em;
             color: #666666;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .icon {
-            margin-right: 8px;
+            margin-left: 8px; /* لتوفير مساحة بين الأيقونة والنص */
         }
     </style>
 </head>
@@ -241,7 +248,7 @@
     <h1>
     <i class="fas fa-calculator icon"></i> حساب الغياب 
     <br> 
-    <i class="fas fa-school"></i> جامعة الملك خالد
+    <i class="fas fa-school icon"></i> جامعة الملك خالد
     </h1>
 
     <div class="container">
@@ -254,7 +261,7 @@
             <option value="health">التخصصات الصحية والمسار الهندسي</option>
         </select>
 
-        <button onclick="calculateAbsence()"><i class="fas fa-divide"></i>احسب نسبة الغياب</button>
+        <button onclick="calculateAbsence()"><i class="fas fa-divide icon"></i>احسب نسبة الغياب</button>
 
         <div class="result" id="result"></div>
         <div class="tips" id="tips"></div>
@@ -284,10 +291,10 @@
             <div class="group-rules-popup">
                 <strong>:شروط القروب</strong>
                 <ul>
-                    <li><i class="fas fa-ban"></i>يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها</li>
-                    <li><i class="fas fa-comments"></i>الأحاديث الجانبية ممنوعة.</li>
-                    <li><i class="fas fa-exclamation-triangle"></i>السب والشتم والسخرية ممنوعة</li>
-                    <li><i class="fas fa-user-slash"></i>مخالفة شروط القروب يعرضك للطرد</li>
+                    <li><i class="fas fa-ban icon"></i>يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها</li>
+                    <li><i class="fas fa-comments icon"></i>الأحاديث الجانبية ممنوعة.</li>
+                    <li><i class="fas fa-exclamation-triangle icon"></i>السب والشتم والسخرية ممنوعة</li>
+                    <li><i class="fas fa-user-slash icon"></i>مخالفة شروط القروب يعرضك للطرد</li>
                 </ul>
             </div>
 
