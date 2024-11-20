@@ -109,25 +109,36 @@
             background-color: #218838;
         }
 
+        /* إخفاء المربع الخاص بالرسم البياني افتراضيًا */
+        .chart-container {
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 128, 0, 0.15);
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border: 1px solid #66cc66;
+            display: none; /* إخفاء المربع افتراضيًا */
+        }
+
         .download-button {
             background-color: #007bff;
             color: #fff;
-            border: none;
             padding: 12px;
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.3s ease;
-            display: none; /* إخفاء الزر افتراضيًا */
+            width: 200px;
+            border-radius: 8px;
+            border: 1px solid #66cc66;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
 
         .download-button:hover {
             background-color: #0056b3;
-        }
-
-        .chart-container {
-            margin-top: 20px;
-            width: 100%;
-            max-width: 600px;
         }
 
         /* شاشة منبثقة */
@@ -248,16 +259,13 @@
         <button class="share-button" onclick="shareSite()"><i class="fas fa-share-alt icon"></i>شارك نسبة الغياب</button>
     </div>
 
-    <div class="chart-container">
+    <!-- المربع الذي يحتوي على الرسم البياني وزر التحميل -->
+    <div class="chart-container" id="chartContainer">
         <canvas id="absenceChart"></canvas>
+        <button class="download-button" id="downloadButton" onclick="downloadChartAsImage()"><i class="fas fa-download icon"></i>تحميل الرسم البياني كصورة</button>
     </div>
 
-    <!-- زر التحميل سيظهر ديناميكيًا -->
-    <button class="download-button" id="downloadButton" onclick="downloadChartAsImage()"><i class="fas fa-download icon"></i>تحميل الرسم البياني كصورة</button>
-
-    <div class="disclaimer">
-        الموقع من عمل أشخاص متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.
-    </div>
+    <div class="note"><i class="fas fa-info-circle icon"></i>يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
 
     <!-- شاشة منبثقة -->
     <div id="popup" class="popup">
@@ -332,6 +340,9 @@
 
                 provideTips(attendance);
                 updateChart(attendance, warningLevels, maxAbsence, remainingDays);
+
+                // إظهار المربع الخاص بالرسم البياني بعد الحساب
+                document.getElementById('chartContainer').style.display = 'block';
             } else {
                 alert("يرجى إدخال نسبة غياب صحيحة.");
             }
