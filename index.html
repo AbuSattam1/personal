@@ -87,6 +87,28 @@
             color: #006600;
         }
 
+        .instruction-image {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .instruction-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .instruction-image p {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
                 /* شاشة منبثقة */
         .popup {
             position: fixed;
@@ -173,7 +195,7 @@
             cursor: pointer;
             border-radius: 5px;
             margin-top: 15px;
-            font-size: 1em;
+            font-size: 0.8em;
             transition: background-color 0.3s ease;
         }
 
@@ -200,13 +222,13 @@
             padding: 12px;
             cursor: pointer;
             margin-top: 10px;
-            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 200px;
             border-radius: 8px;
-            border: none;
-            display: block;
+            border: 1px solid #66cc66;
             margin-left: auto;
             margin-right: auto;
-            transition: background-color 0.3s ease;
+            display: block;
         }
 
         .download-button:hover {
@@ -254,6 +276,11 @@
         </select>
 
         <button onclick="calculateAbsence()"><i class="fas fa-divide icon"></i> احسب نسبة الغياب</button>
+
+        <div class="instruction-image" id="instructionImage">
+            <img src="https://i.postimg.cc/1XQk2Xfm/Picsart-24-11-21-02-32-42-858.jpg" alt="صورة توضيحية">
+            <p>للقيام بالحسبة يرجى كتابة النسبة التي تحتوي على دائرة حمراء وليس دائرة زرقاء، ثم كتابة عدد الأيام.</p>
+        </div>
 
         <div class="result" id="result"></div>
         <div class="tips" id="tips"></div>
@@ -304,20 +331,23 @@
             const calcType = document.getElementById("calcType").value;
             const totalFields = document.getElementById("totalFields");
             const singleField = document.getElementById("singleField");
+            const instructionImage = document.getElementById("instructionImage");
 
             if (calcType === "total") {
                 totalFields.style.display = "block";
                 singleField.style.display = "none";
+                instructionImage.style.display = "block"; // تظهر الصورة
             } else {
                 totalFields.style.display = "none";
                 singleField.style.display = "block";
+                instructionImage.style.display = "none"; // تختفي الصورة
             }
         }
 
         function calculateAbsence() {
             const calcType = document.getElementById("calcType").value;
             const type = document.getElementById("type").value;
-            const maxAbsence = (type === "normal") ? 25 : 20;
+            const maxAbsence = (type === "normal") ? 25 : 20; // التخصص العادي 25%، الصحي والهندسي 20%
 
             let attendance = 0;
             let remainingDays = 0;
@@ -326,8 +356,8 @@
                 const totalAttendance = parseFloat(document.getElementById("totalAttendance").value);
                 const lectureCount = parseInt(document.getElementById("lectureCount").value);
                 if (!isNaN(totalAttendance) && lectureCount > 0) {
-                    attendance = totalAttendance / lectureCount;
-                    remainingDays = Math.floor(maxAbsence / attendance);
+                    attendance = totalAttendance / lectureCount; // حساب نسبة الغياب لكل محاضرة
+                    remainingDays = Math.floor(maxAbsence / attendance); // حساب عدد المحاضرات التي يمكن الغياب فيها
                 }
             } else if (calcType === "single") {
                 attendance = parseFloat(document.getElementById("singleAttendance").value);
@@ -341,18 +371,19 @@
                     <p>نسبة الغياب: (${attendance.toFixed(2)}%)</p>
                     <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
                 `;
-                displayChart(attendance, maxAbsence);
+                updateChart(attendance, maxAbsence);
             } else {
                 alert("يرجى إدخال نسبة غياب صحيحة.");
             }
         }
 
-        function displayChart(attendance, maxAbsence) {
+        function updateChart(attendance, maxAbsence) {
             const remainingPercentage = maxAbsence - attendance;
 
             const data = {
                 labels: ['نسبة الغياب', 'النسبة المتبقية'],
                 datasets: [{
+                    label: 'نسبة الغياب',
                     data: [attendance, remainingPercentage],
                     backgroundColor: ['#ff6666', '#28a745'],
                     hoverOffset: 4
@@ -360,7 +391,7 @@
             };
 
             const config = {
-                type: 'pie',
+                type: 'doughnut',
                 data: data,
                 options: {
                     responsive: true,
@@ -379,17 +410,17 @@
                 }
             };
 
+            // إنشاء الرسم البياني
             const chartElement = document.getElementById('absenceChart');
-            new Chart(chartElement, config);
+            const chart = new Chart(chartElement, config);
 
-            document.getElementById('chartContainer').style.display = 'block';
+            document.getElementById('chartContainer').style.display = 'block'; // عرض الرسم
         }
 
         function downloadChartAsImage() {
-            const chartElement = document.getElementById('absenceChart');
             const link = document.createElement('a');
-            link.href = chartElement.toDataURL('image/png');
-            link.download = 'absence_chart.png';
+            link.href = document.getElementById('absenceChart').toDataURL('image/png');
+            link.download = 'chart.png';
             link.click();
         }
     </script>
