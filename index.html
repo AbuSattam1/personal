@@ -17,7 +17,7 @@
             text-align: center;
             padding: 20px;
             color: #004d00;
-            direction: rtl;
+            direction: rtl; /* جعل الاتجاه من اليمين إلى اليسار */
         }
 
         h1 {
@@ -40,7 +40,7 @@
             max-width: 400px;
             margin: auto;
             border: 1px solid #66cc66;
-            text-align: right;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         input,
@@ -90,14 +90,14 @@
             margin-top: 20px;
             font-size: 0.9em;
             color: #666666;
-            text-align: right;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .tips {
             margin-top: 20px;
             font-weight: bold;
             color: #006600;
-            text-align: right;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .share-button {
@@ -108,13 +108,14 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.3s ease;
-            text-align: right;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .share-button:hover {
             background-color: #218838;
         }
 
+        /* إخفاء المربع الخاص بالرسم البياني افتراضيًا */
         .chart-container {
             margin-top: 20px;
             background-color: #ffffff;
@@ -124,7 +125,7 @@
             max-width: 400px;
             margin: auto;
             border: 1px solid #66cc66;
-            display: none;
+            display: none; /* إخفاء المربع افتراضيًا */
         }
 
         .download-button {
@@ -146,6 +147,7 @@
             background-color: #0056b3;
         }
 
+        /* شاشة منبثقة */
         .popup {
             position: fixed;
             top: 0;
@@ -227,7 +229,7 @@
             margin-top: 20px;
             font-size: 0.9em;
             color: #666666;
-            text-align: right;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         #instructionImage {
@@ -239,36 +241,42 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2);
         }
-
+        
         .icon {
-            margin-left: 8px;
+            margin-left: 8px; /* لتوفير مساحة بين الأيقونة والنص */
         }
     </style>
 </head>
 
 <body>
+
+    <!-- جعل الصورة قابلة للنقر لتوجيه المستخدم إلى رابط القروب -->
     <a href="https://t.me/kku_4" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
     </a>
 
     <h1>
-        <i class="fas fa-calculator icon"></i> حساب الغياب
-        <br>
-        <i class="fas fa-school icon"></i> جامعة الملك خالد
+    <i class="fas fa-calculator icon"></i> حساب الغياب 
+    <br> 
+    <i class="fas fa-school icon"></i> جامعة الملك خالد
     </h1>
 
     <div class="container">
+
+        <!-- اختيار نوع الحساب -->
         <label for="calculationType"><i class="fas fa-check-circle icon"></i> نوع الحساب</label>
         <select id="calculationType" onchange="toggleInputs()" required>
             <option value="individual">نسبة فردية</option>
             <option value="overall">نسبة كلية</option>
         </select>
 
+        <!-- إدخال النسبة الفردية -->
         <div id="individualInputs">
             <label for="attendance"><i class="fas fa-percentage icon"></i> نسبة الغياب لمادة واحدة</label>
             <input type="number" id="attendance" placeholder="أدخل نسبة الغياب" step="0.01">
         </div>
 
+        <!-- إدخال النسبة الكلية وعدد أيام الغياب -->
         <div id="overallInputs" style="display: none;">
             <label for="overallPercentage"><i class="fas fa-percentage icon"></i> النسبة الكلية</label>
             <input type="number" id="overallPercentage" placeholder="أدخل النسبة الكلية" step="0.01">
@@ -282,42 +290,46 @@
             <option value="normal">تخصص عادي</option>
             <option value="health">التخصصات الصحية والمسار الهندسي</option>
         </select>
-
-        <img id="instructionImage" src="https://i.postimg.cc/1XQk2Xfm/Picsart-24-11-21-02-32-42-858.jpg" alt="تعليمات حساب النسبة الكلية">
+<img id="instructionImage" src="https://i.postimg.cc/1XQk2Xfm/Picsart-24-11-21-02-32-42-858.jpg" alt="تعليمات حساب النسبة الكلية">
         <button onclick="calculateAbsence()"><i class="fas fa-divide icon"></i> احسب نسبة الغياب</button>
 
         <div class="result" id="result"></div>
         <div class="tips" id="tips"></div>
-        <div class="note"><i class="fas fa-info-circle icon"></i> يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
+        <div class="note"><i class="fas fa-info-circle icon"></i>يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
     </div>
 
+    <!-- الرسم البياني -->
     <div class="chart-container" id="chartContainer">
         <canvas id="absenceChart"></canvas>
         <button class="download-button" onclick="downloadChartAsImage()">تحميل الرسم البياني كصورة</button>
     </div>
 
+    <!-- شاشة منبثقة -->
     <div id="popup" class="popup">
         <div class="popup-content">
             <a href="https://t.me/kku_4" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد">
             </a>
             <p>للدخول إلى مجموعة جامعة الملك خالد يرجى الضغط على الصورة</p>
+            <div class="empty-line"></div>
             <p>نود التنويه أن القروب من عمل طلاب متطوعين يهدف للإجابة على استفسارات الطلاب ولا يمثل جهة رسمية.</p>
+
             <div class="group-rules-popup">
                 <strong>:شروط القروب</strong>
                 <ul>
-                    <li><i class="fas fa-ban icon"></i> يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها</li>
-                    <li><i class="fas fa-comments icon"></i> الأحاديث الجانبية ممنوعة.</li>
-                    <li><i class="fas fa-exclamation-triangle icon"></i> السب والشتم والسخرية ممنوعة</li>
-                    <li><i class="fas fa-user-slash icon"></i> مخالفة شروط القروب يعرضك للطرد</li>
+                    <li><i class="fas fa-ban icon"></i>يمنع نشر المواضيع الخارجية والروابط والإعلانات بشتى أنواعها</li>
+                    <li><i class="fas fa-comments icon"></i>الأحاديث الجانبية ممنوعة.</li>
+                    <li><i class="fas fa-exclamation-triangle icon"></i>السب والشتم والسخرية ممنوعة</li>
+                    <li><i class="fas fa-user-slash icon"></i>مخالفة شروط القروب يعرضك للطرد</li>
                 </ul>
             </div>
+
             <button class="close-button" onclick="closePopup()">إغلاق</button>
         </div>
     </div>
 
     <script>
-        // دوال التحكم وعرض النتائج والرسم البياني
+        // إظهار الشاشة المنبثقة عند تحميل الصفحة
         window.onload = function () {
             document.getElementById('popup').classList.add('show');
         };
@@ -327,21 +339,21 @@
         }
 
         function toggleInputs() {
-            const calculationType = document.getElementById("calculationType").value;
-            const individualInputs = document.getElementById("individualInputs");
-            const overallInputs = document.getElementById("overallInputs");
-            const instructionImage = document.getElementById("instructionImage");
+        const calculationType = document.getElementById("calculationType").value;
+        const individualInputs = document.getElementById("individualInputs");
+        const overallInputs = document.getElementById("overallInputs");
+        const instructionImage = document.getElementById("instructionImage");
 
-            if (calculationType === "individual") {
-                individualInputs.style.display = "block";
-                overallInputs.style.display = "none";
-                instructionImage.style.display = "none";
-            } else {
-                individualInputs.style.display = "none";
-                overallInputs.style.display = "block";
-                instructionImage.style.display = "block";
-            }
+        if (calculationType === "individual") {
+            individualInputs.style.display = "block";
+            overallInputs.style.display = "none";
+            instructionImage.style.display = "none"; // إخفاء الصورة
+        } else {
+            individualInputs.style.display = "none";
+            overallInputs.style.display = "block";
+            instructionImage.style.display = "block"; // إظهار الصورة
         }
+    }
 
         let chart;
 
@@ -356,12 +368,7 @@
             } else {
                 const overallPercentage = parseFloat(document.getElementById("overallPercentage").value);
                 const absenceDays = parseInt(document.getElementById("absenceDays").value);
-                if (absenceDays > 0) {
-                    attendance = (absenceDays / overallPercentage) * 100;
-                } else {
-                    alert("يرجى إدخال عدد أيام غياب صحيح.");
-                    return;
-                }
+                attendance = overallPercentage / absenceDays;
             }
 
             if (!attendance || attendance <= 0) {
@@ -369,7 +376,7 @@
                 return;
             }
 
-            const remainingDays = Math.floor(maxAbsence - attendance);
+            const remainingDays = Math.floor(maxAbsence / attendance);
             const warningLevels = { first: 10, second: 15 };
 
             let warning = "";
@@ -382,7 +389,7 @@
                 warning = `تنبيه: وصلت إلى الإنذار الثاني (${warningLevels.second}%)`;
                 warningClass = "warning2";
             } else if (attendance >= maxAbsence) {
-                warning = "تحذير: متوقع حرمانك! راجع دكتور المادة.";
+                warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
                 warningClass = "warning3";
             }
 
@@ -392,16 +399,16 @@
                 <p class="${warningClass}">${warning}</p>
             `;
 
-            updateChart(attendance, warningLevels, maxAbsence);
+            updateChart(attendance, warningLevels, maxAbsence, remainingDays);
         }
 
-        function updateChart(attendance, warningLevels, maxAbsence) {
+        function updateChart(attendance, warningLevels, maxAbsence, remainingDays) {
             const data = {
                 labels: ['نسبة الغياب', `إنذار أول (${warningLevels.first}%)`, `إنذار ثاني (${warningLevels.second}%)`, `الحرمان (${maxAbsence}%)`],
                 datasets: [{
                     label: 'نسبة الغياب',
                     data: [attendance, warningLevels.first, warningLevels.second, maxAbsence],
-                    backgroundColor: ['#28a745', '#ffcc00', '#ff6666', '#cc0000'],
+                    backgroundColor: ['#28a745', '#ff6666', '#CB4154', '#cc0000'],
                     hoverOffset: 4
                 }]
             };
