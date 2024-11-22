@@ -264,7 +264,7 @@
     <div class="container">
 
         <!-- اختيار نوع الحساب -->
-        <label for="calculationType"><i class="fas fa-check-circle icon"></i> نوع الحساب</label>
+        <label for="calculationType"><i class="fa fa-cog"></i> نوع النسبة</label>
         <select id="calculationType" onchange="toggleInputs()" required>
             <option value="individual">نسبة فردية</option>
             <option value="overall">نسبة كلية</option>
@@ -290,6 +290,7 @@
             <option value="normal">تخصص عادي</option>
             <option value="health">التخصصات الصحية والمسار الهندسي</option>
         </select>
+        <div class="note"><i class="fa fa-exclamation-triangle"></i> صورة توضيحية: </div>
 <img id="instructionImage" src="https://i.postimg.cc/1XQk2Xfm/Picsart-24-11-21-02-32-42-858.jpg" alt="تعليمات حساب النسبة الكلية">
         <button onclick="calculateAbsence()"><i class="fas fa-divide icon"></i> احسب نسبة الغياب</button>
 
