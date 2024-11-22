@@ -395,8 +395,9 @@
             }
 
             document.getElementById("result").innerHTML = `
-                <p>نسبة الغياب: (${attendance.toFixed(2)}%)</p>
+                <p>نسبة الغياب الفردية: (${attendance.toFixed(2)}%)</p>
                 <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
+                <div class="note"><i class="fa fa-exclamation-triangle"></i> علمًا أن هذي الايام هي الإجمالي للغياب للوصول للحرمان/div>
                 <p class="${warningClass}">${warning}</p>
             `;
 
