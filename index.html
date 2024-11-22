@@ -208,7 +208,19 @@
             margin-left: 10px;
             color: #fff;
         }
+    .noteText {
+        display: flex;
+        justify-content: center; /* لتوسيط المحتوى أفقيًا */
+        align-items: center; /* لتوسيط المحتوى عموديًا */
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666666;
+        text-align: center; /* لتوسيط النصوص */
+    }
 
+    .note i {
+        margin-left: 8px; /* مسافة بين الأيقونة والنص */
+    }
         .close-button {
             background-color: #ff4444;
             color: #fff;
@@ -293,18 +305,19 @@
         <div class="note"><i class="fa fa-exclamation-triangle"></i> صورة توضيحية: </div>
 <img id="instructionImage" src="https://i.postimg.cc/1XQk2Xfm/Picsart-24-11-21-02-32-42-858.jpg" alt="تعليمات حساب النسبة الكلية">
         <button onclick="calculateAbsence()"><i class="fas fa-divide icon"></i> احسب نسبة الغياب</button>
-        <div class="note"><i class="fa fa-code"></i> الموقع من عمل أشخاص متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.</div>
         <div class="result" id="result"></div>
         <div class="tips" id="tips"></div>
         <div class="note"><i class="fas fa-info-circle icon"></i>يرجى ملاحظة أن جميع الحسابات تقريبية وليست دقيقة بنسبة (100%).</div>
     </div>
-
+        <!-- الايقونه الي بالمنتصف -->
+        <!--<div class="noteText"><i class="fas fa-arrows-alt-v"></i></div>-->
+        <div class="noteText"></div>
     <!-- الرسم البياني -->
     <div class="chart-container" id="chartContainer">
         <canvas id="absenceChart"></canvas>
         <button class="download-button" onclick="downloadChartAsImage()">تحميل الرسم البياني كصورة</button>
     </div>
-
+    <div class="noteText"><i class="fa fa-code"></i> الموقع من عمل أشخاص متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.</div>
     <!-- شاشة منبثقة -->
     <div id="popup" class="popup">
         <div class="popup-content">
