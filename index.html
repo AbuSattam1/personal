@@ -403,14 +403,7 @@
 
             updateChart(attendance, warningLevels, maxAbsence, remainingDays);
         }
-    footer {
-        margin-top: 40px;
-        background-color: #f9f9f9;
-        padding: 10px 0;
-        font-size: 0.9em;
-        color: #666666;
-        border-top: 1px solid #e6e6e6;
-}
+
         function updateChart(attendance, warningLevels, maxAbsence, remainingDays) {
             const data = {
                 labels: ['نسبة الغياب', `إنذار أول (${warningLevels.first}%)`, `إنذار ثاني (${warningLevels.second}%)`, `الحرمان (${maxAbsence}%)`],
@@ -457,11 +450,6 @@
             link.download = 'Charts-kku_4.png';
             link.click();
         }
-        <!-- النص في أسفل الصفحة -->
-<footer class="footer">
-    <p>الموقع من عمل أشخاص متطوعين يهدف لخدمة الطلاب ولا يمثل جهة رسمية.</p>
-</footer>
-
     </script>
 </body>
 
