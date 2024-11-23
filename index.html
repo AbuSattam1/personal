@@ -11,17 +11,33 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* إعداد الوضع الليلي */
+        :root {
+            --background-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #66cc66;
+            --button-bg-color: #333333;
+            --button-hover-bg-color: #444444;
+            --container-bg-color: #1e1e1e;
+            --border-color: #444444;
+            --warning-color: #ff4444;
+            --chart-color-1: #28a745;
+            --chart-color-2: #ff6666;
+            --chart-color-3: #CB4154;
+            --chart-color-4: #cc0000;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #e6f7e6;
+            background-color: var(--background-color);
             text-align: center;
             padding: 20px;
-            color: #004d00;
+            color: var(--text-color);
             direction: rtl; /* جعل الاتجاه من اليمين إلى اليسار */
         }
 
         h1 {
-            color: #006600;
+            color: var(--text-color);
             font-size: 26px;
             margin-bottom: 20px;
             text-align: center;
@@ -33,13 +49,13 @@
         }
 
         .container {
-            background-color: #ffffff;
+            background-color: var(--container-bg-color);
             border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 128, 0, 0.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
             padding: 20px;
             max-width: 400px;
             margin: auto;
-            border: 1px solid #66cc66;
+            border: 1px solid var(--border-color);
             text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
@@ -50,12 +66,14 @@
             padding: 12px;
             margin: 10px 0;
             border-radius: 8px;
-            border: 1px solid #66cc66;
+            border: 1px solid var(--border-color);
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
         }
 
         button {
-            background-color: #33cc33;
-            color: #fff;
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
             border: none;
             cursor: pointer;
             font-size: 16px;
@@ -63,7 +81,7 @@
         }
 
         button:hover {
-            background-color: #28a745;
+            background-color: var(--button-hover-bg-color);
         }
 
         .result {
@@ -72,16 +90,16 @@
         }
 
         .warning1 {
-            color: #ff3300;
+            color: var(--warning-color);
         }
 
         .warning2 {
-            color: #ff3300;
+            color: var(--warning-color);
             text-decoration: underline;
         }
 
         .warning3 {
-            color: #cc0000;
+            color: var(--warning-color);
             text-decoration: underline;
             font-weight: bold;
         }
@@ -89,20 +107,20 @@
         .note {
             margin-top: 20px;
             font-size: 0.9em;
-            color: #666666;
+            color: #cccccc;
             text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .tips {
             margin-top: 20px;
             font-weight: bold;
-            color: #006600;
+            color: var(--accent-color);
             text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
         .share-button {
-            background-color: #28a745;
-            color: #fff;
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
             border: none;
             padding: 12px;
             cursor: pointer;
@@ -112,39 +130,39 @@
         }
 
         .share-button:hover {
-            background-color: #218838;
+            background-color: var(--button-hover-bg-color);
         }
 
         /* إخفاء المربع الخاص بالرسم البياني افتراضيًا */
         .chart-container {
             margin-top: 20px;
-            background-color: #ffffff;
+            background-color: var(--container-bg-color);
             border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 128, 0, 0.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
             padding: 20px;
             max-width: 400px;
             margin: auto;
-            border: 1px solid #66cc66;
+            border: 1px solid var(--border-color);
             display: none; /* إخفاء المربع افتراضيًا */
         }
 
         .download-button {
-            background-color: #007bff;
-            color: #fff;
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
             padding: 12px;
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.3s ease;
             width: 200px;
             border-radius: 8px;
-            border: 1px solid #66cc66;
+            border: 1px solid var(--border-color);
             margin-left: auto;
             margin-right: auto;
             display: block;
         }
 
         .download-button:hover {
-            background-color: #0056b3;
+            background-color: var(--button-hover-bg-color);
         }
 
         /* شاشة منبثقة */
@@ -169,12 +187,12 @@
         }
 
         .popup-content {
-            background-color: #ffffff;
+            background-color: var(--container-bg-color);
             padding: 20px;
             border-radius: 15px;
             text-align: center;
             width: 350px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
             position: relative;
         }
 
@@ -188,8 +206,8 @@
             margin-top: 20px;
             text-align: right;
             font-size: 0.9em;
-            background-color: #28a745;
-            color: #ffffff;
+            background-color: var(--accent-color);
+            color: var(--text-color);
             padding: 15px;
             border-radius: 10px;
         }
@@ -206,24 +224,26 @@
 
         .group-rules-popup li i {
             margin-left: 10px;
-            color: #fff;
+            color: var(--text-color);
         }
-    .noteText {
-        display: flex;
-        justify-content: center; /* لتوسيط المحتوى أفقيًا */
-        align-items: center; /* لتوسيط المحتوى عموديًا */
-        margin-top: 20px;
-        font-size: 0.9em;
-        color: #666666;
-        text-align: center; /* لتوسيط النصوص */
-    }
 
-    .note i {
-        margin-left: 8px; /* مسافة بين الأيقونة والنص */
-    }
+        .noteText {
+            display: flex;
+            justify-content: center; /* لتوسيط المحتوى أفقيًا */
+            align-items: center; /* لتوسيط المحتوى عموديًا */
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #cccccc;
+            text-align: center; /* لتوسيط النصوص */
+        }
+
+        .note i {
+            margin-left: 8px; /* مسافة بين الأيقونة والنص */
+        }
+
         .close-button {
-            background-color: #ff4444;
-            color: #fff;
+            background-color: var(--warning-color);
+            color: var(--text-color);
             border: none;
             padding: 8px 20px;
             cursor: pointer;
@@ -240,7 +260,7 @@
         .disclaimer {
             margin-top: 20px;
             font-size: 0.9em;
-            color: #666666;
+            color: #cccccc;
             text-align: right; /* لضبط النصوص والأيقونات على اليمين */
         }
 
@@ -249,11 +269,11 @@
             width: 100%;
             max-width: 350px;
             margin: 20px auto;
-            border: 2px solid #66cc66;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
-        
+
         .icon {
             margin-left: 8px; /* لتوفير مساحة بين الأيقونة والنص */
         }
@@ -344,11 +364,11 @@
     </div>
 <div align='center'>
   <small>
-    <a href='https://www.free-website-hit-counter.com' title="Free Website Hit Counter">عدد الزائرين للصفحة</a>
+    <a href='https://www.free-website-hit-counter.com' title="Free Website Hit Counter">عدد الزائرين</a>
   </small>
   <br />
   <a href='https://www.free-website-hit-counter.com'>
-    <img src='https://www.free-website-hit-counter.com/zc.php?d=4&id=1791&s=7' border='0' alt='Free Website Hit Counter'>
+    <img src='https://www.free-website-hit-counter.com/zc.php?d=4&id=1792&s=7' border='0' alt='Free Website Hit Counter'>
   </a>
 </div>
     <script>
@@ -473,7 +493,37 @@
             link.download = 'Charts-kku_4.png';
             link.click();
         }
+        // وظيفة لإعادة تعبئة الحقول وتدمير الرسم البياني
+function resetInputsAndDestroyChart() {
+    // إعادة تعبئة الحقول
+    document.getElementById("attendance").value = "";
+    document.getElementById("overallPercentage").value = "";
+    document.getElementById("absenceDays").value = "";
+    document.getElementById("result").innerText = "";
+    document.getElementById("tips").innerText = "";
+
+    // تدمير الرسم البياني إذا كان موجودًا
+    if (chart) {
+        chart.destroy();
+        chart = null; // تعيين الرسم البياني كقيمة فارغة
+    }
+
+    // إخفاء قسم الرسم البياني
+    document.getElementById("chartContainer").style.display = "none";
+}
+
+// إضافة مستمع الحدث عند تغيير نوع النسبة
+document.getElementById("calculationType").addEventListener("change", () => {
+    resetInputsAndDestroyChart();
+    toggleInputs(); // تحديث الحقول بناءً على نوع النسبة
+});
+
+// إضافة مستمع الحدث عند تغيير نوع التخصص
+document.getElementById("type").addEventListener("change", resetInputsAndDestroyChart);
     </script>
+</body>
+
+</html>
 </body>
 
 </html>
