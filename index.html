@@ -318,6 +318,7 @@
         <button class="download-button" onclick="downloadChartAsImage()">تحميل الرسم البياني كصورة</button>
     </div>
     <div class="noteText"><i class="fa fa-code"></i> الموقع تطوعي لخدمة الطلاب ولا يمثل جهة رسمية. </div>
+    
     <!-- شاشة منبثقة -->
     <div id="popup" class="popup">
         <div class="popup-content">
@@ -327,7 +328,7 @@
             <p><i class="fa fa-link"></i> للدخول إلى مجموعة جامعة الملك خالد يرجى الضغط على الصورة</p>
 <div class="empty-line"></div>
 <p><i class="fa fa-users"></i> القروب من عمل طلاب متطوعين يهدف للإجابة على استفسارات الطلاب ولا يمثل جهة رسمية</p>
-<div align='center'><a href='https://www.free-website-hit-counter.com'><img src='https://www.free-website-hit-counter.com/zc.php?d=9&id=1787&s=10' border='0' alt='Free Website Hit Counter'></a><br /><small><a href='https://www.free-website-hit-counter.com' title="Free Website Hit Counter">Free website hit counter</a></small></div>
+
             <div class="group-rules-popup">
                 <strong>شروط القروب:</strong>
                 <ul>
@@ -341,8 +342,17 @@
             <button class="close-button" onclick="closePopup()">إغلاق</button>
         </div>
     </div>
-
+<div align='center'>
+  <small>
+    <a href='https://www.free-website-hit-counter.com' title="Free Website Hit Counter">عدد الزائرين للصفحة</a>
+  </small>
+  <br />
+  <a href='https://www.free-website-hit-counter.com'>
+    <img src='https://www.free-website-hit-counter.com/zc.php?d=4&id=1791&s=7' border='0' alt='Free Website Hit Counter'>
+  </a>
+</div>
     <script>
+    
         // إظهار الشاشة المنبثقة عند تحميل الصفحة
         window.onload = function () {
             document.getElementById('popup').classList.add('show');
@@ -456,8 +466,7 @@
 
             document.getElementById('chartContainer').style.display = 'block';
         }
-<script src="https://static.elfsight.com/platform/platform.js" async></script>
-<div class="elfsight-app-80a4493b-4c2d-47f3-877d-0fb2ce0eba61" data-elfsight-app-lazy></div>
+
         function downloadChartAsImage() {
             const link = document.createElement('a');
             link.href = document.getElementById('absenceChart').toDataURL('image/png');
