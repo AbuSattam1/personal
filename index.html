@@ -378,6 +378,114 @@
     font-size: 30px; /* حجم الأيقونة */
     color: #f39c12; /* لون الأيقونة (اختياري) */
 }
+.tips-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.tips-popup-content h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.tips-and-damage-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tips-popup-content h3 {
+    margin-top: 20px;
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.tips-list, .damage-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.tips-list li, .damage-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.tips-list li i, .damage-list li i {
+    margin-right: 10px;
+    color: #2ecc71; /* لون أيقونات النصائح */
+    font-size: 18px;
+}
+
+.damage-list li i {
+    color: #e74c3c; /* لون أيقونات الأضرار */
+}
+
+.note, .warning {
+    font-size: 14px;
+    margin-top: 15px;
+    color: #555;
+}
+
+.note p, .warning p {
+    margin: 5px 0;
+}
+
+.note i, .warning i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.note a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.note a:hover {
+    text-decoration: underline;
+}
+
+.close-tips-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #f39c12;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.close-tips-button:hover {
+    background-color: #e67e22;
+}
+.tips-and-damage-box {
+    background-color: #2ecc71; /* اللون الأخضر */
+    padding: 20px;
+    border-radius: 15px; /* الحواف ناعمة */
+    border: 1px solid #27ae60; /* حد خفيف باللون الأخضر الداكن */
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* إضافة تأثير ظل خفيف */
+}
         .icon {
             margin-left: 8px; /* لتوفير مساحة بين الأيقونة والنص */
         }
@@ -392,17 +500,54 @@
     <!-- شاشة النصائح -->
 
     <div id="tipsPopup" class="tips-popup">
-        <div class="tips-popup-content">
-            <h2>نصائح وأضرار الغياب</h2>
-            <p>الغياب يؤثر على الأداء الأكاديمي. إليك بعض النصائح:</p>
-            <ul>
-                <li>الحضور المنتظم يساعد في فهم المواد.</li>
-                <li>الغياب المتكرر يؤدي إلى الحرمان.</li>
-                <li>تنظيم الوقت هو مفتاح النجاح.</li>
+    <div class="tips-popup-content">
+        <a href="https://t.me/kku_4" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
+        </a>
+        
+        <h2>نصائح وأضرار الغياب</h2>
+        <p>الغياب يمكن أن يكون له تأثير كبير، ولكن مع النصائح الصحيحة، يمكنك التغلب على أي تحدٍ.</p>
+        
+        <!-- قسم النصائح والأضرار داخل مربع -->
+        <div class="tips-and-damage-box">
+            <!-- قسم النصائح -->
+            <h3>نصائح لتجنب الغياب</h3>
+            <ul class="tips-list">
+                <li><i class="fas fa-check-circle"></i> احضر المحاضرات بانتظام لتحسين فهمك.</li>
+                <li><i class="fas fa-clock"></i> قم بإعداد جدول زمني للالتزام بالمواعيد الدراسية.</li>
+                <li><i class="fas fa-user-friends"></i> كون شبكة من الأصدقاء للمساعدة عند الحاجة.</li>
+                <li><i class="fas fa-book"></i> راجع ما فاتك مباشرة عند الغياب.</li>
+                <li><i class="fas fa-laptop"></i> استفد من المصادر الإلكترونية لتوسيع معرفتك.</li>
+                <li><i class="fas fa-graduation-cap"></i> ضع هدف التخرج بامتياز نصب عينيك.</li>
+                <li><i class="fas fa-heartbeat"></i> احرص على الراحة والنوم الكافي لتجنب الإرهاق.</li>
             </ul>
-            <button class="close-tips-button" onclick="toggleTipsPopup()">إغلاق</button>
+            
+            <!-- قسم أضرار الغياب -->
+            <h3>أضرار الغياب المتكرر</h3>
+            <ul class="damage-list">
+                <li><i class="fas fa-exclamation-triangle"></i> الغياب يؤدي إلى صعوبة في فهم المواد الدراسية.</li>
+                <li><i class="fas fa-ban"></i> قد يؤدي الغياب المتكرر إلى الحرمان من الاختبارات.</li>
+                <li><i class="fas fa-user-slash"></i> يقلل الغياب من فرص التفاعل مع المدرسين والزملاء.</li>
+                <li><i class="fas fa-chart-line"></i> يؤثر سلبًا على معدلك التراكمي.</li>
+                <li><i class="fas fa-times-circle"></i> قد يؤدي الغياب إلى فقدان المنح الدراسية أو الدعم الأكاديمي.</li>
+                <li><i class="fas fa-frown"></i> يزيد من الضغط النفسي بسبب تراكم الدروس.</li>
+            </ul>
         </div>
+        
+        <!-- الملاحظة -->
+        <div class="note">
+            <p><i class="fas fa-info-circle"></i> للدخول إلى مجموعة جامعة الملك خالد، يرجى <a href="https://t.me/kku_4" target="_blank">الضغط على الصورة</a>.</p>
+            <p><i class="fas fa-users"></i> القروب من عمل أشخاص متطوعين ولا يتبع جهة رسمية.</p>
+        </div>
+        
+        <!-- التنبيه -->
+        <div class="warning">
+            <p><i class="fas fa-exclamation-circle"></i> الموقع من عمل أشخاص متطوعين لخدمة الطلاب ولا يمثل جهة رسمية.</p>
+        </div>
+
+        <button class="close-tips-button" onclick="toggleTipsPopup()">إغلاق</button>
     </div>
+</div>
     <!-- جعل الصورة قابلة للنقر لتوجيه المستخدم إلى رابط القروب -->
     <a href="https://t.me/kku_4" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
