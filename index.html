@@ -374,150 +374,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
-.menu-icon {
-    font-size: 30px; /* حجم الأيقونة */
-    color: #f39c12; /* لون الأيقونة (اختياري) */
-}
-.tips-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 500px;
-    z-index: 1000;
-    padding: 20px;
-}
 
-.tips-popup-content h2 {
-    text-align: center;
-    color: #f39c12;
-    margin-bottom: 10px;
-}
-
-.tips-and-damage-box {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-}
-
-.tips-popup-content h3 {
-    margin-top: 20px;
-    color: #3498db;
-    border-bottom: 2px solid #3498db;
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
-.tips-list, .damage-list {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-}
-
-.tips-list li, .damage-list li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.tips-list li i, .damage-list li i {
-    margin-right: 10px;
-    color: #2ecc71; /* لون أيقونات النصائح */
-    font-size: 18px;
-}
-
-.damage-list li i {
-    color: #e74c3c; /* لون أيقونات الأضرار */
-}
-
-.note, .warning {
-    font-size: 14px;
-    margin-top: 15px;
-    color: #555;
-}
-
-.note p, .warning p {
-    margin: 5px 0;
-}
-
-.note i, .warning i {
-    margin-right: 10px;
-    font-size: 16px;
-}
-
-.note a {
-    color: #3498db;
-    text-decoration: none;
-}
-
-.note a:hover {
-    text-decoration: underline;
-}
-
-.close-tips-button {
-    display: block;
-    margin: 20px auto 0;
-    padding: 10px 20px;
-    background-color: #f39c12;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.close-tips-button:hover {
-    background-color: #e67e22;
-}
-.tips-and-damage-box {
-    background-color: #2ecc71; /* اللون الأخضر */
-    padding: 20px;
-    border-radius: 15px; /* الحواف ناعمة */
-    border: 1px solid #27ae60; /* حد خفيف باللون الأخضر الداكن */
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* إضافة تأثير ظل خفيف */
-}
-/* تنسيق الأيقونة والنص بشكل عام */
-.menu-icon {
-    font-size: 30px; /* الحجم الافتراضي للأيقونة */
-    margin-right: 10px; /* مسافة بين الأيقونة والنص */
-    vertical-align: middle; /* محاذاة الأيقونة مع النص بشكل رأسي */
-}
-
-.fas.fa-lightbulb {
-    font-size: 30px; /* حجم الأيقونة */
-}
-
-/* استعلامات الوسائط (Media Queries) للتجاوب مع الشاشات الصغيرة */
-@media (max-width: 768px) {
-    .menu-icon {
-        font-size: 24px; /* تقليل حجم الأيقونة في الشاشات الصغيرة */
-    }
-
-    .fas.fa-lightbulb {
-        font-size: 24px; /* تقليل حجم الأيقونة في الشاشات الصغيرة */
-    }
-}
-
-/* استعلامات الوسائط للتجاوب مع الشاشات الصغيرة جدًا (مثل الهواتف) */
-@media (max-width: 480px) {
-    .menu-icon {
-        font-size: 20px; /* تقليل الحجم أكثر في الشاشات الصغيرة جدًا */
-    }
-
-    .fas.fa-lightbulb {
-        font-size: 20px; /* تقليل الحجم أكثر في الشاشات الصغيرة جدًا */
-    }
-}
         .icon {
             margin-left: 8px; /* لتوفير مساحة بين الأيقونة والنص */
         }
@@ -532,54 +389,17 @@
     <!-- شاشة النصائح -->
 
     <div id="tipsPopup" class="tips-popup">
-    <div class="tips-popup-content">
-        <a href="https://t.me/kku_4" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
-        </a>
-        
-        <h2>نصائح وأضرار الغياب</h2>
-        <p>الغياب يمكن أن يكون له تأثير كبير، ولكن مع النصائح الصحيحة، يمكنك التغلب على أي تحدٍ.</p>
-        
-        <!-- قسم النصائح والأضرار داخل مربع -->
-        <div class="tips-and-damage-box">
-            <!-- قسم النصائح -->
-            <h3>نصائح لتجنب الغياب</h3>
-            <ul class="tips-list">
-                <li><i class="fas fa-check-circle"></i> احضر المحاضرات بانتظام لتحسين فهمك.</li>
-                <li><i class="fas fa-clock"></i> قم بإعداد جدول زمني للالتزام بالمواعيد الدراسية.</li>
-                <li><i class="fas fa-user-friends"></i> كون شبكة من الأصدقاء للمساعدة عند الحاجة.</li>
-                <li><i class="fas fa-book"></i> راجع ما فاتك مباشرة عند الغياب.</li>
-                <li><i class="fas fa-laptop"></i> استفد من المصادر الإلكترونية لتوسيع معرفتك.</li>
-                <li><i class="fas fa-graduation-cap"></i> ضع هدف التخرج بامتياز نصب عينيك.</li>
-                <li><i class="fas fa-heartbeat"></i> احرص على الراحة والنوم الكافي لتجنب الإرهاق.</li>
+        <div class="tips-popup-content">
+            <h2>نصائح وأضرار الغياب</h2>
+            <p>الغياب يؤثر على الأداء الأكاديمي. إليك بعض النصائح:</p>
+            <ul>
+                <li>الحضور المنتظم يساعد في فهم المواد.</li>
+                <li>الغياب المتكرر يؤدي إلى الحرمان.</li>
+                <li>تنظيم الوقت هو مفتاح النجاح.</li>
             </ul>
-            
-            <!-- قسم أضرار الغياب -->
-            <h3>أضرار الغياب المتكرر</h3>
-            <ul class="damage-list">
-                <li><i class="fas fa-exclamation-triangle"></i> الغياب يؤدي إلى صعوبة في فهم المواد الدراسية.</li>
-                <li><i class="fas fa-ban"></i> قد يؤدي الغياب المتكرر إلى الحرمان من الاختبارات.</li>
-                <li><i class="fas fa-user-slash"></i> يقلل الغياب من فرص التفاعل مع المدرسين والزملاء.</li>
-                <li><i class="fas fa-chart-line"></i> يؤثر سلبًا على معدلك التراكمي.</li>
-                <li><i class="fas fa-times-circle"></i> قد يؤدي الغياب إلى فقدان المنح الدراسية أو الدعم الأكاديمي.</li>
-                <li><i class="fas fa-frown"></i> يزيد من الضغط النفسي بسبب تراكم الدروس.</li>
-            </ul>
+            <button class="close-tips-button" onclick="toggleTipsPopup()">إغلاق</button>
         </div>
-        
-        <!-- الملاحظة -->
-        <div class="note">
-            <p><i class="fas fa-info-circle"></i> للدخول إلى مجموعة جامعة الملك خالد، يرجى <a href="https://t.me/kku_4" target="_blank">الضغط على الصورة</a>.</p>
-            <p><i class="fas fa-users"></i> القروب من عمل أشخاص متطوعين ولا يتبع جهة رسمية.</p>
-        </div>
-        
-        <!-- التنبيه -->
-        <div class="warning">
-            <p><i class="fas fa-exclamation-circle"></i> الموقع من عمل أشخاص متطوعين لخدمة الطلاب ولا يمثل جهة رسمية.</p>
-        </div>
-
-        <button class="close-tips-button" onclick="toggleTipsPopup()">إغلاق</button>
     </div>
-</div>
     <!-- جعل الصورة قابلة للنقر لتوجيه المستخدم إلى رابط القروب -->
     <a href="https://t.me/kku_4" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
@@ -836,6 +656,217 @@ document.getElementById("type").addEventListener("change", resetInputsAndDestroy
 </body>
 
 </html>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب الغياب - جامعة الملك خالد KKU</title>
+
+    <!-- إضافة مكتبة Font Awesome للأيقونات -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* إعداد الوضع الليلي */
+        :root {
+            --background-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #66cc66;
+            --button-bg-color: #333333;
+            --button-hover-bg-color: #444444;
+            --container-bg-color: #1e1e1e;
+            --border-color: #444444;
+            --warning-color: #ff4444;
+            --chart-color-1: #28a745;
+            --chart-color-2: #ff6666;
+            --chart-color-3: #CB4154;
+            --chart-color-4: #cc0000;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            text-align: center;
+            padding: 20px;
+            color: var(--text-color);
+            direction: rtl; /* جعل الاتجاه من اليمين إلى اليسار */
+        }
+
+        h1 {
+            color: var(--text-color);
+            font-size: 26px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            background-color: var(--container-bg-color);
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border: 1px solid var(--border-color);
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
+        }
+
+        input,
+        select,
+        button {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
+        }
+
+        button {
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg-color);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .warning1 {
+            color: var(--warning-color);
+        }
+
+        .warning2 {
+            color: var(--warning-color);
+            text-decoration: underline;
+        }
+
+        .warning3 {
+            color: var(--warning-color);
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #cccccc;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
+        }
+
+        .tips {
+            margin-top: 20px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
+        }
+
+        .share-button {
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            text-align: right; /* لضبط النصوص والأيقونات على اليمين */
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <!-- أيقونة الثلاث الشرطات -->
+
+
+    <!-- باقي الكود الأصلي -->
+    <a href="https://t.me/kku_4" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/ar/7/75/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83_%D8%AE%D8%A7%D9%84%D8%AF.png" alt="شعار جامعة الملك خالد" class="logo">
+    </a>
+
+    <h1>
+    <i class="fas fa-calculator icon"></i> حساب الغياب 
+    <br> 
+    <i class="fas fa-school icon"></i> جامعة الملك خالد
+    </h1>
+
+    <!-- باقي الكود كما هو -->
+
+    <script>
+        // دالة التحكم في شاشة النصائح
+        function toggleTipsPopup() {
+            const tipsPopup = document.getElementById('tipsPopup');
+            tipsPopup.classList.toggle('show');
+        }
+    </script>
 </body>
 
 </html>
