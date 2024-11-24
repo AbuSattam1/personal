@@ -399,99 +399,110 @@
 
         let chart;
 
-        function calculateAbsence() {
-            const calculationType = document.getElementById("calculationType").value;
-            const type = document.getElementById("type").value;
-            const maxAbsence = (type === "normal") ? 25 : 20;
+function calculateAbsence() {
+    const calculationType = document.getElementById("calculationType").value;
+    const type = document.getElementById("type").value;
+    const maxAbsence = (type === "normal") ? 25 : 20;
 
-            let attendance;
-            if (calculationType === "individual") {
-                attendance = parseFloat(document.getElementById("attendance").value);
-            } else {
-                const overallPercentage = parseFloat(document.getElementById("overallPercentage").value);
-                const absenceDays = parseInt(document.getElementById("absenceDays").value);
-                attendance = overallPercentage / absenceDays;
-            }
+    let attendance;
+    if (calculationType === "individual") {
+        attendance = parseFloat(document.getElementById("attendance").value);
+    } else {
+        const overallPercentage = parseFloat(document.getElementById("overallPercentage").value);
+        const absenceDays = parseInt(document.getElementById("absenceDays").value);
+        attendance = overallPercentage / absenceDays;
+    }
 
-            if (!attendance || attendance <= 0) {
-                alert("يرجى إدخال نسبة غياب صحيحة.");
-                return;
-            }
+    if (!attendance || attendance <= 0) {
+        alert("يرجى إدخال نسبة غياب صحيحة.");
+        return;
+    }
 
-            const remainingDays = Math.floor(maxAbsence / attendance);
-            const warningLevels = { first: 10, second: 15 };
+    const remainingDays = Math.floor(maxAbsence / attendance);
+    const warningLevels = { first: 10, second: 15 };
 
-            let warning = "";
-            let warningClass = "";
+    let warning = "";
+    let warningClass = "";
 
-            if (attendance >= warningLevels.first && attendance < warningLevels.second) {
-                warning = `تنبيه: وصلت إلى الإنذار الأول (${warningLevels.first}%)`;
-                warningClass = "warning1";
-            } else if (attendance >= warningLevels.second && attendance < maxAbsence) {
-                warning = `تنبيه: وصلت إلى الإنذار الثاني (${warningLevels.second}%)`;
-                warningClass = "warning2";
-            } else if (attendance >= maxAbsence) {
-                warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
-                warningClass = "warning3";
-            }
+    if (attendance >= warningLevels.first && attendance < warningLevels.second) {
+        warning = `تنبيه: وصلت إلى الإنذار الأول (${warningLevels.first}%)`;
+        warningClass = "warning1";
+    } else if (attendance >= warningLevels.second && attendance < maxAbsence) {
+        warning = `تنبيه: وصلت إلى الإنذار الثاني (${warningLevels.second}%)`;
+        warningClass = "warning2";
+    } else if (attendance >= maxAbsence) {
+        warning = "تحذير: متوقع حرمانك راجع دكتور المادة!";
+        warningClass = "warning3";
+    }
 
-            document.getElementById("result").innerHTML = `
-                <p>نسبة الغياب الفردية: (${attendance.toFixed(2)}%)</p>
-                <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
-                <p> <i class="fa fa-exclamation-triangle"></i> علمًا أن عدد المحاضرات هي الإجمالي للغياب للوصول للحرمان.</p>
-                <p class="${warningClass}">${warning}</p>
-            `;
+    document.getElementById("result").innerHTML = `
+        <p>نسبة الغياب الفردية: (${attendance.toFixed(2)}%)</p>
+        <p>يمكنك غياب (${remainingDays}) محاضرة قبل الوصول للحرمان.</p>
+        <p> <i class="fa fa-exclamation-triangle"></i> علمًا أن عدد المحاضرات هي الإجمالي للغياب للوصول للحرمان.</p>
+        <p class="${warningClass}">${warning}</p>
+    `;
 
-            updateChart(attendance, warningLevels, maxAbsence, remainingDays);
-        }
+    updateChart(attendance, warningLevels, maxAbsence, remainingDays);
+}
 
-        function updateChart(attendance, warningLevels, maxAbsence, remainingDays) {
-            const data = {
-                labels: ['نسبة الغياب', `إنذار أول (${warningLevels.first}%)`, `إنذار ثاني (${warningLevels.second}%)`, `الحرمان (${maxAbsence}%)`],
-                datasets: [{
-                    label: 'نسبة الغياب',
-                    data: [attendance, warningLevels.first, warningLevels.second, maxAbsence],
-                    backgroundColor: ['#28a745', '#ff6666', '#CB4154', '#cc0000'],
-                    hoverOffset: 4
-                }]
-            };
+function updateChart(attendance, warningLevels, maxAbsence, remainingDays) {
+    const data = {
+        labels: ['نسبة الغياب', `إنذار أول (${warningLevels.first}%)`, `إنذار ثاني (${warningLevels.second}%)`, `الحرمان (${maxAbsence}%)`],
+        datasets: [{
+            label: 'نسبة الغياب',
+            data: [attendance, warningLevels.first, warningLevels.second, maxAbsence],
+            backgroundColor: ['#28a745', '#ff6666', '#CB4154', '#cc0000'],
+            hoverOffset: 4
+        }]
+    };
 
-            const config = {
-                type: 'doughnut',
-                data: data,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (tooltipItem) {
-                                    return `${tooltipItem.label}: ${tooltipItem.raw}%`;
-                                }
-                            }
+    const config = {
+        type: 'bar',  // تغيير النوع من 'doughnut' إلى 'bar' للعرض العامودي
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true, // التأكد من أن المحور الرأسي يبدأ من الصفر
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%'; // إضافة % للعلامات
                         }
                     }
                 }
-            };
-
-            if (chart) {
-                chart.destroy();
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                        }
+                    }
+                }
             }
-
-            chart = new Chart(document.getElementById('absenceChart'), config);
-
-            document.getElementById('chartContainer').style.display = 'block';
         }
+    };
 
-        function downloadChartAsImage() {
-            const link = document.createElement('a');
-            link.href = document.getElementById('absenceChart').toDataURL('image/png');
-            link.download = 'Charts-kku_4.png';
-            link.click();
-        }
-        // وظيفة لإعادة تعبئة الحقول وتدمير الرسم البياني
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(document.getElementById('absenceChart'), config);
+
+    document.getElementById('chartContainer').style.display = 'block';
+}
+
+function downloadChartAsImage() {
+    const link = document.createElement('a');
+    link.href = document.getElementById('absenceChart').toDataURL('image/png');
+    link.download = 'Charts-kku_4.png';
+    link.click();
+}
+
+// وظيفة لإعادة تعبئة الحقول وتدمير الرسم البياني
 function resetInputsAndDestroyChart() {
     // إعادة تعبئة الحقول
     document.getElementById("attendance").value = "";
